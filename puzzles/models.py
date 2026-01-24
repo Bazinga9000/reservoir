@@ -1,5 +1,13 @@
 from django.db import models
 
+class PuzzleStatus(models.TextChoices):
+    LOCKED = 'LO', "Locked"
+    NOT_STARTED = 'NS', "Not Started"
+    IN_PROGRESS = 'IP', "In Progress"
+    STUCK = 'ST', "Stuck"
+    NES = 'EX', "Now Extract Somehow" 
+    SOLVED = 'SL', "Solved"
+
 class Hunt(models.Model):
     name = models.CharField(max_length=255)
 
@@ -8,7 +16,20 @@ class Hunt(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+    
+    def count_puzzles_of_status(self, status: PuzzleStatus):
+        count = 0
+        for round in self.round_set.all():
+            count += round.puzzle_set.filter(status__exact=status).count()
+        
+        return count
+    
+    def total_puzzles(self):
+        count = 0
+        for round in self.round_set.all():
+            count += round.puzzle_set.count()
 
+        return count
 
 class Round(models.Model):
     name = models.CharField(max_length=255)
@@ -16,15 +37,6 @@ class Round(models.Model):
 
     def __str__(self):
         return f"{self.hunt} - {self.name}"
-
-
-class PuzzleStatus(models.TextChoices):
-    LOCKED = 'LO', "Locked"
-    NOT_STARTED = 'NS', "Not Started"
-    IN_PROGRESS = 'IP', "In Progress"
-    STUCK = 'ST', "Stuck"
-    NES = 'EX', "Now Extract Somehow" 
-    SOLVED = 'SL', "Solved"
 
 class Puzzle(models.Model):
     name = models.CharField(max_length=255)
