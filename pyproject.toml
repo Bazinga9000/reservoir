@@ -1,0 +1,17 @@
+[project]
+name = "reservoir"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "django>=6.0.1",
+]
+
+[dependency-groups]
+dev = [
+    "django-debug-toolbar>=6.2.0",
+]
+prod = [
+    "gunicorn>=24.1.1",
+]
