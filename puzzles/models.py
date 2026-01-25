@@ -30,6 +30,15 @@ class Hunt(models.Model):
             count += round.puzzle_set.count()
 
         return count
+    
+    def num_locked(self):
+        return self.count_puzzles_of_status(PuzzleStatus.LOCKED)
+
+    def num_solved(self):
+        return self.count_puzzles_of_status(PuzzleStatus.SOLVED)
+    
+    def num_avaliable(self):
+        return self.total_puzzles() - self.num_solved() - self.num_locked()
 
 class Round(models.Model):
     name = models.CharField(max_length=255)
@@ -54,4 +63,4 @@ class Answer(models.Model):
     puzzle = models.ForeignKey(Puzzle, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"Answer for {self.puzzle.name}: {self.answer_text}"
+        return f"{self.answer_text}"

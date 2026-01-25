@@ -1,0 +1,25 @@
+
+<h1>{{ hunt.name }}</h1>
+Total Puzzles: <b>{{ hunt.total_puzzles }}</b><br>
+Locked Puzzles: <b>{{ hunt.num_locked }}</b><br>
+Solved Puzzles: <b>{{ num_solved }}</b><br>
+Avaliable Puzzles: <b>{{ num_available }}</b><br>
+
+{% for round in hunt.round_set.all %}
+<div class="roundinfo" style="border-style: solid;">
+    <h2>{{ round.name }}</h2>
+    {% for puzzle in round.puzzle_set.all %}
+    <div class="puzzleinfo" style="border-style: dotted;">
+        <span class="puzzlename">{{ puzzle.name }}</span>
+        <br>
+        <span class="status_{{ puzzle.status }}">{{ puzzle.get_status_display }}</span>
+        {% if puzzle.answer_set.all %}
+        (Answer{{puzzle.answer_set.all.count|pluralize}}:
+        <span class="answer" style="color: green">
+        {{ puzzle.answer_set.all| join:", "}}
+        </span>)
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endfor %}
