@@ -10,7 +10,7 @@ Avaliable Puzzles: <b>{{ hunt.num_available }}</b><br>
     <h2>{{ round.name }}</h2>
     {% for puzzle in round.puzzle_set.all %}
     <div class="puzzleinfo" style="border-style: dotted;">
-        <span class="puzzlename">{{ puzzle.name }}</span>
+        <span class="puzzlename"><a href="{% url 'puzzles:puzzlepage' puzzle.id %}">{{ puzzle.name }}</a></span>
         <br>
         <span class="status_{{ puzzle.status }}">{{ puzzle.get_status_display }}</span>
         {% if puzzle.answer_set.all %}
