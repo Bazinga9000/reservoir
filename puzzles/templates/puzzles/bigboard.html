@@ -2,8 +2,8 @@
 <h1>{{ hunt.name }}</h1>
 Total Puzzles: <b>{{ hunt.total_puzzles }}</b><br>
 Locked Puzzles: <b>{{ hunt.num_locked }}</b><br>
-Solved Puzzles: <b>{{ num_solved }}</b><br>
-Avaliable Puzzles: <b>{{ num_available }}</b><br>
+Solved Puzzles: <b>{{ hunt.num_solved }}</b><br>
+Avaliable Puzzles: <b>{{ hunt.num_available }}</b><br>
 
 {% for round in hunt.round_set.all %}
 <div class="roundinfo" style="border-style: solid;">

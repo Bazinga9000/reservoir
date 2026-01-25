@@ -37,7 +37,7 @@ class Hunt(models.Model):
     def num_solved(self):
         return self.count_puzzles_of_status(PuzzleStatus.SOLVED)
     
-    def num_avaliable(self):
+    def num_available(self):
         return self.total_puzzles() - self.num_solved() - self.num_locked()
 
 class Round(models.Model):
