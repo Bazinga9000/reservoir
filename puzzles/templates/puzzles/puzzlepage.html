@@ -1,12 +1,33 @@
 <h1>{{ puzzle.hunt_round.name }} - {{ puzzle.name }}</h1>
-<h3>{{ puzzle.get_status_display }} </h3>
 
-{% if puzzle.answer_set.all %}
-Answer{{puzzle.answer_set.all.count|pluralize}}:
-<span class="answer" style="color: green">
-{{ puzzle.answer_set.all| join:", "}}
-</span><br>
-{% endif %}
+<form autocomplete="off" action="{% url 'puzzles:update' puzzle.id %}" method="post">
+{% csrf_token %}
+<fieldset>
+    <legend><h3>Puzzle Details</h3></legend>
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    <label for="statuses">Puzzle Status</label>
+
+    <select name="status" id="statuses">
+        {% for opt in puzzle_statuses.choices %}
+        <option value="{{ opt.0 }}" {% if opt.0 == puzzle.status %} selected="selected" {% endif %}>{{ opt.1 }}</option>
+        {% endfor %}
+    </select><br>
+
+    {% if puzzle.answer_set.all %}
+    Answer{{puzzle.answer_set.all.count|pluralize}}:<br>
+    {% for answer in puzzle.answer_set.all %}
+    <span class="answer" style="color: green">
+    {{ answer.answer_text }}
+    </span>  Delete: <input type="checkbox" id="delete_answer_{{ answer.id }}" name="delete_answer_{{ answer.id }}" value="Delete">
+    <br>
+    {% endfor %}
+    {% endif %}
+    <label for="new_answer">Add Answer</label>
+    <input class="new_answer" name="new_answer" maxlength="255"></input>
+
+</fieldset>
+<input type="submit" value="Update">
+</form>
 
 <a href="{% url 'puzzles:bigboard' puzzle.hunt_round.hunt.id %}">Back to {{ puzzle.hunt_round.hunt.name }}</a>
 
