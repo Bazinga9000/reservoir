@@ -5,6 +5,13 @@ Locked Puzzles: <b>{{ hunt.num_locked }}</b><br>
 Solved Puzzles: <b>{{ hunt.num_solved }}</b><br>
 Avaliable Puzzles: <b>{{ hunt.num_available }}</b><br>
 
+<form autocomplete="off" action="{% url 'puzzles:new_round' hunt.id %}" method="post">
+{% csrf_token %}
+<label for="new_round">Add New Round</label>
+<input class="new_round" name="new_round" maxlength="255"></input>
+<input type="submit" value="Add">
+</form>
+
 {% for round in hunt.round_set.all %}
 <div class="roundinfo" style="border-style: solid;">
     <h2>{{ round.name }}</h2>

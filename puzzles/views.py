@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 
-from .models import Hunt, Puzzle, PuzzleStatus, Answer
+from .models import Hunt, Round, Puzzle, PuzzleStatus, Answer
 
 def bigboard(request, hunt_id):
     hunt = get_object_or_404(Hunt, pk=hunt_id)
@@ -41,3 +41,16 @@ def update(request, puzzle_id):
         ans.save() 
 
     return HttpResponseRedirect(reverse("puzzles:puzzlepage", args=(puzzle.id,)))
+
+
+def new_round(request, hunt_id):
+    hunt = get_object_or_404(Hunt, pk=hunt_id)
+
+    new_round_name = request.POST["new_round"]
+    if new_round_name != "" and len(new_round_name) < 255:
+        rnd = Round()
+        rnd.name = new_round_name
+        rnd.hunt = hunt
+        rnd.save()
+
+    return HttpResponseRedirect(reverse("puzzles:bigboard", args=(hunt.id,)))
