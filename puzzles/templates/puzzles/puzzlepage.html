@@ -13,6 +13,9 @@
         {% endfor %}
     </select><br>
 
+    <label for="puzzle_url">Puzzle URL</label>
+    <input class="puzzle_url" name="puzzle_url" maxlength="255" value="{{puzzle.url}}"></input><br>
+
     {% if puzzle.answer_set.all %}
     Answer{{puzzle.answer_set.all.count|pluralize}}:<br>
     {% for answer in puzzle.answer_set.all %}

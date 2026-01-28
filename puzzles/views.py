@@ -25,6 +25,10 @@ def update(request, puzzle_id):
     # Update puzzle status
     new_status = request.POST["status"]
     puzzle.status = new_status
+
+    new_url = request.POST["puzzle_url"]
+    puzzle.url = new_url
+
     puzzle.save()
 
     # Delete any requested answer
