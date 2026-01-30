@@ -51,6 +51,7 @@ class Puzzle(models.Model):
     name = models.CharField(max_length=255)
     hunt_round = models.ForeignKey(Round, on_delete=models.CASCADE)
     url = models.URLField()
+    is_meta = models.BooleanField(default=False)
 
     status = models.CharField(max_length=2, choices=PuzzleStatus.choices, default=PuzzleStatus.LOCKED)
 
