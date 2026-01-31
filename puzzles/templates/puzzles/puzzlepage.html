@@ -1,21 +1,11 @@
-<h1>{{ puzzle.hunt_round.name }} - {{ puzzle.name }}</h1>
+<h1>{{ puzzle.hunt_round.name }} - {% if puzzle.is_meta %}<b style="color:red">META - </b>{% endif %}{{ puzzle.name }}</h1>
 
 <form autocomplete="off" action="{% url 'puzzles:update' puzzle.id %}" method="post">
 {% csrf_token %}
 <fieldset>
     <legend><h3>Puzzle Details</h3></legend>
     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-    <label for="statuses">Puzzle Status</label>
-
-    <select name="status" id="statuses">
-        {% for opt in puzzle_statuses.choices %}
-        <option value="{{ opt.0 }}" {% if opt.0 == puzzle.status %} selected="selected" {% endif %}>{{ opt.1 }}</option>
-        {% endfor %}
-    </select><br>
-
-    <label for="puzzle_url">Puzzle URL</label>
-    <input class="puzzle_url" name="puzzle_url" maxlength="255" value="{{puzzle.url}}"></input><br>
-
+    {{ update_puzzle_form }}
     {% if puzzle.answer_set.all %}
     Answer{{puzzle.answer_set.all.count|pluralize}}:<br>
     {% for answer in puzzle.answer_set.all %}
@@ -25,8 +15,6 @@
     <br>
     {% endfor %}
     {% endif %}
-    <label for="new_answer">Add Answer</label>
-    <input class="new_answer" name="new_answer" maxlength="255"></input>
 
 </fieldset>
 <input type="submit" value="Update">

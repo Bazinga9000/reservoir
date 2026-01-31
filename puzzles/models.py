@@ -39,6 +39,13 @@ class Hunt(models.Model):
     
     def num_available(self):
         return self.total_puzzles() - self.num_solved() - self.num_locked()
+    
+    def meta_solves(self):
+        count = 0
+        for round in self.round_set.all():
+            count += round.puzzle_set.filter(status__exact=PuzzleStatus.SOLVED, is_meta__exact=True).count()
+        
+        return count
 
 class Round(models.Model):
     name = models.CharField(max_length=255)
