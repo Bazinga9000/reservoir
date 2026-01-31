@@ -16,3 +16,6 @@ wheels/
 __pycache__
 db.sqlite3
 media
+
+# Env vars
+.env
