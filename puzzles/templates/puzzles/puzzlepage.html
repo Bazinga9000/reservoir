@@ -1,4 +1,6 @@
-<h1>{{ puzzle.hunt_round.name }} - {% if puzzle.is_meta %}<b style="color:red">META - </b>{% endif %}{{ puzzle.name }}</h1>
+{% load static %}
+<link rel="stylesheet" href="{% static 'puzzles/style.css' %}">
+<h1>{{ puzzle.hunt_round.name }} - {% if puzzle.is_meta %}<span class="meta_name"><b>META</b></span>{% endif %}{{ puzzle.name }}</h1>
 
 <form autocomplete="off" action="{% url 'puzzles:update' puzzle.id %}" method="post">
 {% csrf_token %}

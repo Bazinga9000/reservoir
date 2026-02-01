@@ -1,0 +1,66 @@
+@import url('https://cdn.jsdelivr.net/npm/@catppuccin/palette/css/catppuccin.css');
+
+@font-face {
+    font-family: "fairfaxhd";
+    src:
+        local("Fairfax HD"),
+        local("Fairfax HD-Regular"),
+        url("./fonts/FairfaxHD.ttf") format("truetype");
+}
+
+body {
+    background-color: var(--ctp-mocha-crust);
+    color: var(--ctp-mocha-text);
+    font-family: "fairfaxhd", sans-serif;
+    font-size: 18px;
+}
+
+.icon svg {
+  width: 100px;
+  height: 100px;
+}
+
+.bigboard_number {
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.countbox {
+    border: 5px solid;
+    border-radius: 5px;
+    display: inline-block;
+    padding: 10px;
+    text-align: center;
+}
+
+.total_count {
+  color: var(--ctp-mocha-rosewater);
+}
+
+.locked_count {
+  color: var(--ctp-mocha-red);
+}
+
+.solved_count {
+  color: var(--ctp-mocha-green);
+}
+
+.open_count {
+  color: var(--ctp-mocha-yellow);
+}
+
+.meta_count {
+  color: var(--ctp-mocha-lavender);
+}
+
+.answer {
+  color: var(--ctp-mocha-green);
+}
+
+.meta_name {
+  color: var(--ctp-mocha-red);
+  border: 5px solid;
+  border-radius: 5px;
+  padding: 5px;
+  margin-right: 5px;
+}

@@ -1,10 +1,13 @@
-
+{% load static %}
+<link rel="stylesheet" href="{% static 'puzzles/style.css' %}">
+<center>
 <h1>{{ hunt.name }}</h1>
-Total Puzzles: <b>{{ hunt.total_puzzles }}</b><br>
-Locked Puzzles: <b>{{ hunt.num_locked }}</b><br>
-Solved Puzzles: <b>{{ hunt.num_solved }}</b><br>
-Avaliable Puzzles: <b>{{ hunt.num_available }}</b><br>
-Meta Solves: <b>{{ hunt.meta_solves }}</b><br>
+<div class="total_count countbox"><div class="icon">{% include 'puzzles/icons/puzzle.svg' %}</div><span class="bigboard_number">{{ hunt.total_puzzles }}</span><br>Total Puzzles</div>
+<div class="locked_count countbox"><div class="icon">{% include 'puzzles/icons/lock.svg' %}</div><span class="bigboard_number">{{ hunt.num_locked }}</span><br>Locked Puzzles</div>
+<div class="solved_count countbox"><div class="icon">{% include 'puzzles/icons/check.svg' %}</div><span class="bigboard_number">{{ hunt.num_solved }}</span><br> Solved Puzzles</div>
+<div class="open_count countbox"><div class="icon">{% include 'puzzles/icons/target.svg' %}</div><span class="bigboard_number">{{ hunt.num_available }}</span><br>Avaliable Puzzles</div>
+<div class="meta_count countbox"><div class="icon">{% include 'puzzles/icons/fractal.svg' %}</div><span class="bigboard_number">{{ hunt.meta_solves }}</span><br>Meta Solves</div>
+</center>
 
 <form autocomplete="off" action="{% url 'puzzles:new_round' hunt.id %}" method="post">
 {% csrf_token %}
@@ -19,14 +22,14 @@ Meta Solves: <b>{{ hunt.meta_solves }}</b><br>
     {% for puzzle in round.puzzle_set.all %}
     <div class="puzzleinfo" style="border-style: dotted;">
         {% if puzzle.is_meta %} 
-        <b style="color:red">META - </b>
+        <span class="meta_name"><b>META</b></span>
         {% endif %}
         <span class="puzzlename"><a href="{% url 'puzzles:puzzlepage' puzzle.id %}">{{ puzzle.name }}</a></span>
         <br>
         <span class="status_{{ puzzle.status }}">{{ puzzle.get_status_display }}</span>
         {% if puzzle.answer_set.all %}
         (Answer{{puzzle.answer_set.all.count|pluralize}}:
-        <span class="answer" style="color: green">
+        <span class="answer">
         {{ puzzle.answer_set.all| join:", "}}
         </span>)
         {% endif %}
