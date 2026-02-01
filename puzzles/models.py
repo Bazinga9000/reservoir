@@ -1,4 +1,5 @@
 from django.db import models
+from . import google
 
 class PuzzleStatus(models.TextChoices):
     LOCKED = 'LO', "Locked"
@@ -59,12 +60,25 @@ class Puzzle(models.Model):
     hunt_round = models.ForeignKey(Round, on_delete=models.CASCADE)
     url = models.URLField()
     is_meta = models.BooleanField(default=False)
+    sheet_id = models.CharField(max_length=255, default="")
 
     status = models.CharField(max_length=2, choices=PuzzleStatus.choices, default=PuzzleStatus.LOCKED)
 
     def __str__(self):
         return f"{self.hunt_round} - {self.name}"
     
+    def regenerate_puzzle_sheet(self):
+        # This won't delete the old sheet, but it will make the site show you the new one.
+        self.sheet_id = google.make_puzzle_sheet(f"{self.hunt_round.hunt.name} - {self.name}")
+        self.save()
+
+    def sheet_url(self):
+        # Make a sheet if one does not exist
+        if self.sheet_id == "":
+            self.regenerate_puzzle_sheet()
+        
+        return f"https://docs.google.com/spreadsheets/d/{self.sheet_id}/edit"
+
 
 class Answer(models.Model):
     answer_text = models.CharField(max_length=255)

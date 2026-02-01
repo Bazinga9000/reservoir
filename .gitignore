@@ -17,5 +17,6 @@ __pycache__
 db.sqlite3
 media
 
-# Env vars
+# Env vars and credentials
 .env
+secrets/

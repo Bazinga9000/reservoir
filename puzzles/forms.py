@@ -14,6 +14,7 @@ class NewPuzzleForm(forms.Form):
         puzzle.status = self.cleaned_data["status"]
         puzzle.url = self.cleaned_data["url"]
         puzzle.is_meta = self.cleaned_data["is_meta"]
+        puzzle.regenerate_puzzle_sheet()
         return puzzle
 
 
