@@ -58,9 +58,102 @@ body {
 }
 
 .meta_name {
-  color: var(--ctp-mocha-red);
+  color: var(--ctp-mocha-lavender);
   border: 5px solid;
   border-radius: 5px;
   padding: 5px;
   margin-right: 5px;
+}
+
+.round_info {
+  border: 5px solid;
+  color: var(--ctp-mocha-text);
+  margin: 15px;
+  padding: 5px;
+}
+
+.puzzles_list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+}
+
+.puzzles_list a {
+  margin: 0.5em;
+  text-decoration: none;
+}
+
+.puzzle_info {
+  border-width: 2px;
+  border-radius: 2px;
+  border-style: solid;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100%;
+}
+
+.puzzle_info:hover {
+  background-color: var(--ctp-mocha-surface2);
+}
+
+.puzzle_name {
+  font-size: 24px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.meta_info {
+  outline: double 6px;
+}
+
+.answer_line {
+  width: 100%;
+  border-top: 2px solid;
+  color: inherit;
+}
+
+.new_puzzle_icon {
+  min-height: 100%;
+  flex-grow: 1;
+  align-self: center;
+}
+
+.new_puzzle_icon svg {
+  width: auto;
+  height: calc(24px + 1em + 2px);
+  color: var(--ctp-mocha-text);
+}
+
+.new_puzzle_icon a {
+  text-decoration: none;
+}
+
+.new_puzzle_icon svg:hover {
+  color: var(--ctp-mocha-surface2);
+}
+
+/* locked */
+.status_LO {
+  color: var(--ctp-mocha-red);
+}
+
+/* stuck */
+.status_ST {
+  color: var(--ctp-mocha-peach);
+}
+
+/* in progress */
+.status_IP {
+  color: var(--ctp-mocha-yellow);
+}
+
+/* now extract somehow */
+.status_EX {
+  color: var(--ctp-mocha-sky);
+}
+
+/* solved */
+.status_SL {
+  color: var(--ctp-mocha-green);
 }

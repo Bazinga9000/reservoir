@@ -11,7 +11,7 @@
     {% if puzzle.answer_set.all %}
     Answer{{puzzle.answer_set.all.count|pluralize}}:<br>
     {% for answer in puzzle.answer_set.all %}
-    <span class="answer" style="color: green">
+    <span class="answer">
     {{ answer.answer_text }}
     </span>  Delete: <input type="checkbox" id="delete_answer_{{ answer.id }}" name="delete_answer_{{ answer.id }}" value="Delete">
     <br>

@@ -6,35 +6,26 @@
 <div class="locked_count countbox"><div class="icon">{% include 'puzzles/icons/lock.svg' %}</div><span class="bigboard_number">{{ hunt.num_locked }}</span><br>Locked Puzzles</div>
 <div class="solved_count countbox"><div class="icon">{% include 'puzzles/icons/check.svg' %}</div><span class="bigboard_number">{{ hunt.num_solved }}</span><br> Solved Puzzles</div>
 <div class="open_count countbox"><div class="icon">{% include 'puzzles/icons/target.svg' %}</div><span class="bigboard_number">{{ hunt.num_available }}</span><br>Avaliable Puzzles</div>
-<div class="meta_count countbox"><div class="icon">{% include 'puzzles/icons/fractal.svg' %}</div><span class="bigboard_number">{{ hunt.meta_solves }}</span><br>Meta Solves</div>
+<div class="meta_count countbox"><div class="icon">{% include 'puzzles/icons/layers.svg' %}</div><span class="bigboard_number">{{ hunt.meta_solves }}</span><br>Meta Solves</div>
 </center>
 
-<form autocomplete="off" action="{% url 'puzzles:new_round' hunt.id %}" method="post">
-{% csrf_token %}
-<label for="new_round">Add New Round</label>
-<input class="new_round" name="new_round" maxlength="255"></input>
-<input type="submit" value="Add">
-</form>
-
 {% for round in hunt.round_set.all %}
-<div class="roundinfo" style="border-style: solid;">
-    <h2>{{ round.name }}</h2>
+<div class="round_info">
+    <center><h2>{{ round.name }}</h2></center>
+    <div class="puzzles_list">
     {% for puzzle in round.puzzle_set.all %}
-    <div class="puzzleinfo" style="border-style: dotted;">
-        {% if puzzle.is_meta %} 
-        <span class="meta_name"><b>META</b></span>
-        {% endif %}
-        <span class="puzzlename"><a href="{% url 'puzzles:puzzlepage' puzzle.id %}">{{ puzzle.name }}</a></span>
-        <br>
-        <span class="status_{{ puzzle.status }}">{{ puzzle.get_status_display }}</span>
+    <a href="{% url 'puzzles:puzzlepage' puzzle.id %}"><div class="puzzle_info status_{{ puzzle.status }}{% if puzzle.is_meta %} meta_info{% endif %}">
+        <center><span class="puzzle_name">{% if puzzle.is_meta %}META: {% endif %}{{ puzzle.name }}</span></center>
         {% if puzzle.answer_set.all %}
-        (Answer{{puzzle.answer_set.all.count|pluralize}}:
-        <span class="answer">
+        <div class="answer_line"></div>
+        <center><span class="answer">
         {{ puzzle.answer_set.all| join:", "}}
-        </span>)
+        </span></center>
         {% endif %}
-    </div>
+    </div></a>
     {% endfor %}
+    <span class="new_puzzle_icon"><a href="TODO">{% include 'puzzles/icons/plus.svg' %}</a></span>
+    </div>
     <div class="newpuzzle" style="border-style: dotted;">
         <form autocomplete="off" action="{% url 'puzzles:new_puzzle' hunt.id round.id %}" method="post">
             {% csrf_token %}
@@ -44,3 +35,11 @@
     </div>
 </div>
 {% endfor %}
+
+
+<form autocomplete="off" action="{% url 'puzzles:new_round' hunt.id %}" method="post">
+{% csrf_token %}
+<label for="new_round">Add New Round</label>
+<input class="new_round" name="new_round" maxlength="255"></input>
+<input type="submit" value="Add">
+</form>
