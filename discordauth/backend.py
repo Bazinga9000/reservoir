@@ -26,19 +26,14 @@ class DiscordAuthBackend(BaseBackend):
             return None
         else:
             req = requests.post(f"https://discord.com/api/oauth2/token", data=data, headers=headers, auth=(CLIENT_ID, CLIENT_SECRET))
-            print(req)
             if req.status_code >= 300:
-                print("bad auth code")
                 return None
             resp = req.json()
             if resp.get("scope") != "identify" or resp.get("token_type") != "Bearer":
-                print("bad attrs")
                 return None
             token = resp.get("access_token")
             if token is None:
-                print("bad token")
                 return None
-            print(resp)
             headers = {
                 "Authorization": f"Bearer {token}"
             }
