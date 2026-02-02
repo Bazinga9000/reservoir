@@ -2,8 +2,15 @@ import requests
 from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.backends import BaseBackend
-from .local_settings import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI
+from dotenv import load_dotenv
+import os
 from .models import DiscordUser
+
+load_dotenv()
+
+CLIENT_ID = os.getenv("CLIENT_ID")
+CLIENT_SECRET = os.getenv("CLIENT_SECRET")
+REDIRECT_URI = os.getenv("REDIRECT_URI")
     
 class DiscordAuthBackend(BaseBackend):
     def get_user(self, user_id):
