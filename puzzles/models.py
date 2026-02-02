@@ -55,6 +55,10 @@ class Round(models.Model):
     def __str__(self):
         return f"{self.hunt} - {self.name}"
 
+    def puzzles_ordered(self):
+        # TODO: human sort the name? We might have something weird like shell game with numbered puzzles that goes over 10?
+        return self.puzzle_set.order_by("-is_meta", "name").all()
+
 class Puzzle(models.Model):
     name = models.CharField(max_length=255)
     hunt_round = models.ForeignKey(Round, on_delete=models.CASCADE)
