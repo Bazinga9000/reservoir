@@ -8,9 +8,10 @@ class NewPuzzleForm(forms.Form):
     url = forms.URLField(label="Puzzle URL", required=False)
     is_meta = forms.BooleanField(label="Meta?", required=False)
 
-    def make_puzzle(self):
+    def make_puzzle(self, hunt_round):
         puzzle = Puzzle()
         puzzle.name = self.cleaned_data["name"]
+        puzzle.hunt_round = hunt_round
         puzzle.status = self.cleaned_data["status"]
         puzzle.url = self.cleaned_data["url"]
         puzzle.is_meta = self.cleaned_data["is_meta"]

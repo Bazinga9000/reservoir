@@ -64,8 +64,7 @@ def new_puzzle(request, hunt_id, round_id):
     if request.method == "POST":
         form = NewPuzzleForm(request.POST)
         if form.is_valid():
-            puzzle = form.make_puzzle()
-            puzzle.hunt_round = hunt_round
+            puzzle = form.make_puzzle(hunt_round)
             puzzle.save()
     
     return HttpResponseRedirect(reverse("puzzles:bigboard", args=(hunt.id,)))
