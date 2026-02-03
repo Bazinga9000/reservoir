@@ -15,6 +15,27 @@ body {
     font-size: 18px;
 }
 
+input, select, button {
+  border-style: solid;
+  font-family: "fairfaxhd", sans-serif;
+  background-color: inherit;
+  color: inherit;
+  border-color: var(--ctp-mocha-text);
+  font-size: inherit;
+
+  border-width: 2px;
+  border-radius: 2px;
+  border-style: solid;
+
+  margin: 2px;
+  padding: 2px;
+}
+
+fieldset {
+  border-color: inherit;
+}
+
+
 .icon svg {
   width: 100px;
   height: 100px;
@@ -131,6 +152,7 @@ body {
 
 .new_puzzle_icon svg:hover {
   color: var(--ctp-mocha-surface2);
+  cursor: pointer;
 }
 
 /* locked */
@@ -156,4 +178,37 @@ body {
 /* solved */
 .status_SL {
   color: var(--ctp-mocha-green);
+}
+
+.cancel_button {
+  color: var(--ctp-mocha-red);
+  border-color: var(--ctp-mocha-red);
+}
+
+.cancel_button:hover {
+  background-color: var(--ctp-mocha-surface2);
+  cursor: pointer;
+  user-select: none;
+}
+
+.submit_button {
+  border-color: var(--ctp-mocha-green);
+  min-height: 100%;
+  color: var(--ctp-mocha-green);
+  background-color: var(--ctp-mocha-crust);
+}
+
+.submit_button:hover {
+  background-color: var(--ctp-mocha-surface2);
+  cursor: pointer;
+  user-select: none;
+}
+
+.new_puzzle_form {
+  display: none;
+  position: fixed;
+  background-color: var(--ctp-mocha-crust);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

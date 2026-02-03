@@ -24,13 +24,17 @@
         {% endif %}
     </div></a>
     {% endfor %}
-    <span class="new_puzzle_icon"><a href="TODO">{% include 'puzzles/icons/plus.svg' %}</a></span>
+    <span class="new_puzzle_icon"><a onclick="showForm('new_puzzle_form_{{round.id}}')">{% include 'puzzles/icons/plus.svg' %}</a></span>
     </div>
-    <div class="newpuzzle" style="border-style: dotted;">
+    <div class="new_puzzle_form" id="new_puzzle_form_{{round.id}}">
         <form autocomplete="off" action="{% url 'puzzles:new_puzzle' hunt.id round.id %}" method="post">
             {% csrf_token %}
-            {{ new_puzzle_form }}
-            <input type="submit" value="New Puzzle">
+            <fieldset>
+                <legend><h3>New Puzzle - {{ round.name }} </h3></legend>
+                {{ new_puzzle_form }}
+                <button class="cancel_button" onclick="closeForm('new_puzzle_form_{{round.id}}')">Cancel</button>
+                <button class="submit_button" type="submit">New Puzzle</button>
+            </fieldset>
         </form>
     </div>
 </div>
@@ -41,5 +45,29 @@
 {% csrf_token %}
 <label for="new_round">Add New Round</label>
 <input class="new_round" name="new_round" maxlength="255"></input>
-<input type="submit" value="Add">
+<button type="submit">Add New Round</button>
 </form>
+
+
+<script>
+    function showForm(formId) {
+      // Get all forms
+      var forms = document.querySelectorAll('.new_puzzle_form');
+      // Loop through forms and hide them
+      forms.forEach(function(form) {
+        form.style.display = 'none';
+      });
+      // Show the selected form
+      var selectedForm = document.getElementById(formId);
+      if (selectedForm) {
+        selectedForm.style.display = 'block';
+      }
+    }
+
+    function closeForm(formId) {
+      var selectedForm = document.getElementById(formId);
+      if (selectedForm) {
+        selectedForm.style.display = 'none';
+      }
+    }
+</script>
