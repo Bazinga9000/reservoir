@@ -10,26 +10,21 @@ def bigboard(request, hunt_id):
 
     return render(request, "puzzles/bigboard.html", {
         "hunt": hunt,
-        "new_puzzle_form": NewPuzzleForm()
+        "new_puzzle_form": NewPuzzleForm(hunt)
     })
 
 def puzzlepage(request, puzzle_id):
     puzzle = get_object_or_404(Puzzle, pk=puzzle_id)
     return render(request, "puzzles/puzzlepage.html", {
         "puzzle": puzzle,
-        "update_puzzle_form": UpdatePuzzleForm(initial={
-            "name": puzzle.name,
-            "status": puzzle.status,
-            "url": puzzle.url,
-            "is_meta": puzzle.is_meta
-        })
+        "update_puzzle_form": UpdatePuzzleForm(puzzle)
     })
 
 def update(request, puzzle_id):
     puzzle = get_object_or_404(Puzzle, pk=puzzle_id)
     
     if request.method == "POST":
-        form = UpdatePuzzleForm(request.POST)
+        form = UpdatePuzzleForm(puzzle, request.POST)
         if form.is_valid():
             form.update_puzzle(puzzle)
 
@@ -54,17 +49,17 @@ def new_round(request, hunt_id):
     return HttpResponseRedirect(reverse("puzzles:bigboard", args=(hunt.id,)))
 
 
-def new_puzzle(request, hunt_id, round_id):
+def new_puzzle(request, hunt_id):
     hunt = get_object_or_404(Hunt, pk=hunt_id)
-    hunt_round = get_object_or_404(Round, pk=round_id)
+    hunt_round = get_object_or_404(Round, pk=1)
 
     if hunt_round.hunt.id != hunt.id:
         raise Http404("This round is for a different hunt than the given hunt")
 
     if request.method == "POST":
-        form = NewPuzzleForm(request.POST)
+        form = NewPuzzleForm(hunt, request.POST)
         if form.is_valid():
-            puzzle = form.make_puzzle(hunt_round)
+            puzzle = form.make_puzzle()
             puzzle.save()
     
     return HttpResponseRedirect(reverse("puzzles:bigboard", args=(hunt.id,)))

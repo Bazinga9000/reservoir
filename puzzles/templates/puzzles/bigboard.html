@@ -24,21 +24,28 @@
         {% endif %}
     </div></a>
     {% endfor %}
-    <span class="new_puzzle_icon"><a onclick="showForm('new_puzzle_form_{{round.id}}')">{% include 'puzzles/icons/plus.svg' %}</a></span>
-    </div>
-    <div class="new_puzzle_form" id="new_puzzle_form_{{round.id}}">
-        <form autocomplete="off" action="{% url 'puzzles:new_puzzle' hunt.id round.id %}" method="post">
-            {% csrf_token %}
-            <fieldset>
-                <legend><h3>New Puzzle - {{ round.name }} </h3></legend>
-                {{ new_puzzle_form }}
-                <button class="cancel_button" onclick="closeForm('new_puzzle_form_{{round.id}}')">Cancel</button>
-                <button class="submit_button" type="submit">New Puzzle</button>
-            </fieldset>
-        </form>
+    <span class="new_puzzle_icon"><a onclick="showForm('new_puzzle_form', {{ round.id }})">{% include 'puzzles/icons/plus.svg' %}</a></span>
     </div>
 </div>
 {% endfor %}
+{% if hunt.roundless_puzzles %}
+<div class="round_info">
+    <center><h2><i>Puzzles With No Round</i></h2></center>
+    <div class="puzzles_list">
+    {% for puzzle in hunt.roundless_puzzles %}
+    <a href="{% url 'puzzles:puzzlepage' puzzle.id %}"><div class="puzzle_info status_{{ puzzle.status }}{% if puzzle.is_meta %} meta_info{% endif %}">
+        <center><span class="puzzle_name">{% if puzzle.is_meta %}META: {% endif %}{{ puzzle.name }}</span></center>
+        {% if puzzle.answer_set.all %}
+        <div class="answer_line"></div>
+        <center><span class="answer">
+        {{ puzzle.answer_set.all| join:", "}}
+        </span></center>
+        {% endif %}
+        </div>
+    </div></a>
+    {% endfor %}
+</div>
+{% endif %}
 
 
 <form autocomplete="off" action="{% url 'puzzles:new_round' hunt.id %}" method="post">
@@ -48,9 +55,21 @@
 <button type="submit">Add New Round</button>
 </form>
 
+<div class="new_puzzle_form" id="new_puzzle_form">
+        <form autocomplete="off" action="{% url 'puzzles:new_puzzle' hunt.id %}" method="post">
+            {% csrf_token %}
+            <fieldset>
+                <legend><h3>New Puzzle</h3></legend>
+                {{ new_puzzle_form }}
+                <button class="cancel_button" onclick="closeForm('new_puzzle_form')">Cancel</button>
+                <button class="submit_button" onclick="closeForm('new_puzzle_form')" type="submit">New Puzzle</button>
+            </fieldset>
+        </form>
+    </div>
+
 
 <script>
-    function showForm(formId) {
+    function showForm(formId, select_id) {
       // Get all forms
       var forms = document.querySelectorAll('.new_puzzle_form');
       // Loop through forms and hide them
@@ -61,6 +80,12 @@
       var selectedForm = document.getElementById(formId);
       if (selectedForm) {
         selectedForm.style.display = 'block';
+
+        if (select_id) {
+            round_select = selectedForm.querySelector("#id_rounds")
+            round_select.value = [select_id]
+        }
+
       }
     }
 
