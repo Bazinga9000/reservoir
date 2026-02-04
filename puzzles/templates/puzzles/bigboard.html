@@ -1,5 +1,10 @@
-{% load static %}
-<link rel="stylesheet" href="{% static 'puzzles/style.css' %}">
+{% extends "puzzles/base.html" %}
+
+{% block title %}ℝeservoir - {{ hunt.name }}{% endblock %}
+{% block nav-left %}
+<a href="/">Hunts</a> > <b>{{ hunt.name }}</b>
+{% endblock %}
+{% block content %}
 <center>
 <h1>{{ hunt.name }}</h1>
 <div class="total_count countbox"><div class="icon">{% include 'puzzles/icons/puzzle.svg' %}</div><span class="bigboard_number">{{ hunt.total_puzzles }}</span><br>Total Puzzles</div>
@@ -96,3 +101,4 @@
       }
     }
 </script>
+{% endblock %}

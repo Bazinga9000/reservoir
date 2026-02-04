@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <link rel="stylesheet" href="{% static 'puzzles/style.css' %}">
+    <title>{% block title %}ℝeservoir{% endblock %}</title>
+</head>
+
+<body>
+    <div class="nav">
+        <span class="nav-left">
+            {% block nav-left %}
+            
+            {% endblock %}
+        </span>
+        <span class="nav-right">
+            {% block nav-right %}
+            <a href="{% url 'discordauth:login' %}">Login</a>
+            {% endblock %}
+        </span>
+    </div>
+
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

@@ -1,5 +1,10 @@
-{% load static %}
-<link rel="stylesheet" href="{% static 'puzzles/style.css' %}">
+{% extends "puzzles/base.html" %}
+
+{% block title %}ℝeservoir - {{ puzzle.name }}{% endblock %}
+{% block nav-left %}
+<a href="/">Hunts</a> > <a href="{% url 'puzzles:bigboard' puzzle.hunt.id %}">{{ puzzle.hunt.name }}</a> > <b>{{ puzzle.name }}</b>
+{% endblock %}
+{% block content %}
 <h1>{% if puzzle.is_meta %}<span class="meta_name"><b>META</b></span>{% endif %}{{ puzzle.name }}</h1>
 <h2>Round{{puzzle.rounds.all.count|pluralize}}: {{ puzzle.rounds.all| join:", "}}</h2>
 
@@ -23,7 +28,6 @@
 <input type="submit" value="Update">
 </form>
 
-<a href="{% url 'puzzles:bigboard' puzzle.hunt.id %}">Back to {{ puzzle.hunt.name }}</a>
-
 <iframe src="{{ puzzle.url }}", width="100%" height="100%"></iframe>
 <iframe src="{{ puzzle.sheet_url }}", width="100%" height="100%"></iframe>
+{% endblock %}

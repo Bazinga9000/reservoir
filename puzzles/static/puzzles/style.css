@@ -13,6 +13,11 @@ body {
     color: var(--ctp-mocha-text);
     font-family: "fairfaxhd", sans-serif;
     font-size: 18px;
+    margin: auto;
+}
+
+#content {
+  margin: auto 8px;
 }
 
 input, select, button {
@@ -101,7 +106,6 @@ fieldset {
 
 .puzzles_list a {
   margin: 0.5em;
-  text-decoration: none;
 }
 
 .puzzle_info {
@@ -146,8 +150,14 @@ fieldset {
   color: var(--ctp-mocha-text);
 }
 
-.new_puzzle_icon a {
+/* TODO: prettier link colors maybe? */
+a {
   text-decoration: none;
+  color: var(--ctp-mocha-sapphire);
+}
+
+a:hover {
+    color: var(--ctp-mocha-blue);
 }
 
 .new_puzzle_icon svg:hover {
@@ -221,3 +231,17 @@ fieldset {
   paint-order: stroke fill;
 }
 
+.nav {
+  font-size: 24px;
+  background-color: var(--ctp-mocha-surface0);
+  border-bottom: 2px solid var(--ctp-mocha-text); 
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 8px;
+}
+
+.nav-right {
+  text-align: right;
+  padding-right: 16px
+}
