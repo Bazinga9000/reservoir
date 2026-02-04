@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 AUTHENTICATION_BACKENDS = ["discordauth.backend.DiscordAuthBackend", "django.contrib.auth.backends.ModelBackend"]
 
 INSTALLED_APPS = [
+    'daphne',  # keep at beginning
     'discordauth.apps.AuthConfig',
     'puzzles.apps.PuzzlesConfig',
     'django.contrib.admin',
@@ -119,3 +120,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+
+# Channels
+
+ASGI_APPLICATION = 'web.asgi.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('127.0.0.1', 6379)],
+        },
+    }
+}
