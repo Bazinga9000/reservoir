@@ -29,7 +29,7 @@
         {% endif %}
     </div></a>
     {% endfor %}
-    <span class="new_puzzle_icon"><a onclick="showForm('new_puzzle_form', {{ round.id }})">{% include 'puzzles/icons/plus.svg' %}</a></span>
+    <span class="new_puzzle_icon"><a onclick="showForm('new_puzzle_form', '{{ round.id }}')">{% include 'puzzles/icons/plus.svg' %}</a></span>
     </div>
 </div>
 {% endfor %}
