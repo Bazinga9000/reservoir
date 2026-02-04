@@ -7,7 +7,12 @@
 {% block content %}
 <h1>{% if puzzle.is_meta %}<span class="meta_name"><b>META</b></span>{% endif %}{{ puzzle.name }}</h1>
 <h2>Round{{puzzle.rounds.all.count|pluralize}}: {{ puzzle.rounds.all| join:", "}}</h2>
+<button onclick="showForm('update_puzzle_form')">Update Details</button>
 
+<iframe src="{{ puzzle.url }}", width="100%" height="100%"></iframe>
+<iframe src="{{ puzzle.sheet_url }}", width="100%" height="100%"></iframe>
+
+<div class="popup_form" id="update_puzzle_form">
 <form autocomplete="off" action="{% url 'puzzles:update' puzzle.id %}" method="post">
 {% csrf_token %}
 <fieldset>
@@ -23,11 +28,30 @@
     <br>
     {% endfor %}
     {% endif %}
-
+    <button class="cancel_button" onclick="closeForm('update_puzzle_form')">Cancel</button>
+    <button class="submit_button" onclick="closeForm('update_puzzle_form')" type="submit">Update</button>
 </fieldset>
-<input type="submit" value="Update">
 </form>
+<script>
+    function showForm(formId) {
+      // Get all forms
+      var forms = document.querySelectorAll('.popup_form');
+      // Loop through forms and hide them
+      forms.forEach(function(form) {
+        form.style.display = 'none';
+      });
+      // Show the selected form
+      var selectedForm = document.getElementById(formId);
+      if (selectedForm) {
+        selectedForm.style.display = 'block';
+      }
+    }
 
-<iframe src="{{ puzzle.url }}", width="100%" height="100%"></iframe>
-<iframe src="{{ puzzle.sheet_url }}", width="100%" height="100%"></iframe>
+    function closeForm(formId) {
+      var selectedForm = document.getElementById(formId);
+      if (selectedForm) {
+        selectedForm.style.display = 'none';
+      }
+    }
+</script>
 {% endblock %}
