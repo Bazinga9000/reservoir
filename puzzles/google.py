@@ -23,3 +23,10 @@ def make_puzzle_sheet(puzzle_title):
     new.share(None, "anyone", "writer", False, with_link=True)
     # TODO: share directly with anyone who adds a gmail account so they aren't anonymous on the sheet?
     return new.id
+
+# Rename a given sheet to match the puzzle's name, if it has one
+def rename_sheet(sheet_id, puzzle_title):
+    if sheet_id != "":
+        client = get_client()
+        sheet = client.open_by_key(sheet_id)
+        sheet.update_title(f"{TEAM_NAME} - {puzzle_title}")

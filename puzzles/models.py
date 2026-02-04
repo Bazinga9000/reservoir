@@ -69,6 +69,9 @@ class Puzzle(models.Model):
         self.sheet_id = google.make_puzzle_sheet(f"{self.name}")
         self.save()
 
+    def rename_puzzle_sheet(self):
+        google.rename_sheet(self.sheet_id, self.name)
+
     def sheet_url(self):
         # Make a sheet if one does not exist
         if self.sheet_id == "":

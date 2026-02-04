@@ -61,7 +61,11 @@ class UpdatePuzzleForm(forms.Form):
         self.fields["is_meta"].initial = puzzle.is_meta
 
     def update_puzzle(self, puzzle):
+
+        old_name = puzzle.name
         puzzle.name = self.cleaned_data["name"]
+        if old_name != puzzle.name:
+            puzzle.rename_puzzle_sheet()
 
         puzzle.rounds.clear()
         for hunt_round in self.cleaned_data["rounds"]:
