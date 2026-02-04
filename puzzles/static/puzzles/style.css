@@ -204,11 +204,20 @@ fieldset {
   user-select: none;
 }
 
-.new_puzzle_form {
+.popup_form {
   display: none;
   position: fixed;
-  background-color: var(--ctp-mocha-crust);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+.popup_form fieldset {
+  background-color: var(--ctp-mocha-crust);
+}
+
+.popup_form legend {
+  -webkit-text-stroke: 5px var(--ctp-mocha-crust);
+  paint-order: stroke fill;
+}
+

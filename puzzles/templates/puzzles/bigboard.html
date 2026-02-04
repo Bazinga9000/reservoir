@@ -55,7 +55,7 @@
 <button type="submit">Add New Round</button>
 </form>
 
-<div class="new_puzzle_form" id="new_puzzle_form">
+<div class="popup_form" id="new_puzzle_form">
         <form autocomplete="off" action="{% url 'puzzles:new_puzzle' hunt.id %}" method="post">
             {% csrf_token %}
             <fieldset>
