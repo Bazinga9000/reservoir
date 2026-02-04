@@ -4,7 +4,7 @@ from . import views
 
 app_name = "puzzles"
 urlpatterns = [
-    # path("", views.index, name="index"),
+    path("", views.landing, name="landing"),
     path("hunt/<int:hunt_id>/", views.bigboard, name="bigboard"),
     path("puzzle/<int:puzzle_id>/", views.puzzlepage, name="puzzlepage"),
     path("puzzle/<int:puzzle_id>/update", views.update, name="update"),

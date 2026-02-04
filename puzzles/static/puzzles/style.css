@@ -245,3 +245,23 @@ a:hover {
   text-align: right;
   padding-right: 16px
 }
+
+.hunt_info {
+  font-size: 40px;
+  border: 2px solid var(--ctp-mocha-text); 
+  border-radius: 8px;
+  color: var(--ctp-mocha-text);
+  display: flex;
+  justify-content: space-between;
+  width: 50%;
+  padding: 8px;
+  margin: 8px;
+}
+
+.hunt_info:hover {
+  background-color: var(--ctp-mocha-surface2);
+}
+
+.hunt_right {
+  text-align: right;
+}

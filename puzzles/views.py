@@ -4,6 +4,7 @@ from django.urls import reverse
 
 from .models import Hunt, Round, Puzzle, PuzzleStatus, Answer
 from .forms import NewPuzzleForm, UpdatePuzzleForm
+from os import getenv
 
 def bigboard(request, hunt_id):
     hunt = get_object_or_404(Hunt, pk=hunt_id)
@@ -63,3 +64,9 @@ def new_puzzle(request, hunt_id):
             puzzle.save()
     
     return HttpResponseRedirect(reverse("puzzles:bigboard", args=(hunt.id,)))
+
+def landing(request):
+    return render(request, "puzzles/landing.html", {
+        "hunts": Hunt.objects.all(),
+        "team_name": getenv("TEAM_NAME")
+    })
