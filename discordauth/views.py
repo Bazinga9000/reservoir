@@ -8,7 +8,7 @@ import os
 
 load_dotenv()
 
-CLIENT_ID = os.getenv("CLIENT_ID")
+DISCORD_CLIENT_ID = os.getenv("DISCORD_CLIENT_ID")
 REDIRECT_URI = os.getenv("REDIRECT_URI")
 
 from uuid import uuid4
@@ -16,7 +16,7 @@ from uuid import uuid4
 def login(request):
     state = uuid4().hex
     request.session["state"] = state
-    return HttpResponse(f"<a href=https://discord.com/oauth2/authorize?client_id={CLIENT_ID}&response_type=code&redirect_uri={quote(REDIRECT_URI)}&scope=identify&state={state}>discord sign in</a>")
+    return HttpResponse(f"<a href=https://discord.com/oauth2/authorize?client_id={DISCORD_CLIENT_ID}&response_type=code&redirect_uri={quote(REDIRECT_URI)}&scope=identify&state={state}>discord sign in</a>")
 
 def auth(request):
     if "code" not in request.GET \

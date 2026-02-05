@@ -8,8 +8,8 @@ from .models import DiscordUser
 
 load_dotenv()
 
-CLIENT_ID = os.getenv("CLIENT_ID")
-CLIENT_SECRET = os.getenv("CLIENT_SECRET")
+DISCORD_CLIENT_ID = os.getenv("DISCORD_CLIENT_ID")
+DISCORD_CLIENT_SECRET = os.getenv("DISCORD_CLIENT_SECRET")
 REDIRECT_URI = os.getenv("REDIRECT_URI")
     
 class DiscordAuthBackend(BaseBackend):
@@ -32,7 +32,7 @@ class DiscordAuthBackend(BaseBackend):
         if code is None:
             return None
         else:
-            req = requests.post(f"https://discord.com/api/oauth2/token", data=data, headers=headers, auth=(CLIENT_ID, CLIENT_SECRET))
+            req = requests.post(f"https://discord.com/api/oauth2/token", data=data, headers=headers, auth=(DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET))
             if req.status_code >= 300:
                 return None
             resp = req.json()

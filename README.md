@@ -25,3 +25,20 @@ SHEETS_FOLDER_ID = <The ID of the Google Drive folder from step 4.>
 
 6. Run `uv sync` to set up the Python environment.
 7. Run `uv run authenticate_google.py` to authenticate the app with your (team's) Google account and generate (more) persistent credentials. This is done so that the end users don't have to authenticate randomly.
+
+### Discord Authentication
+
+This site relies on Discord as an authentication provider. You will need to set up (or obtain credentials for) [a Discord application](https://discord.com/developers/docs/topics/oauth2).
+
+1. Obtain the following two values for your Discord application:
+   - the Client ID
+   - the Client Secret. Note that clicking Reset Secret to view the secret will nullify any in-use secrets.
+2. Determine the Redirect URL. 
+   - This is usually where you will be hosting your server, with `/auth` appended. For debugging purposes this can be something like `http://localhost:8080/auth`.
+3. Configure this URL as a valid Redirect URI for Discord OAuth.
+4. Add the following entires to the `.env` file:
+```
+DISCORD_CLIENT_ID = <client ID>
+DISCORD_CLIENT_SECRET = <client Secret>
+REDIRECT_URI = <redirect URI you entered into Discord>
+```
