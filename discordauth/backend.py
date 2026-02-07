@@ -20,7 +20,7 @@ class DiscordAuthBackend(BaseBackend):
             return None
 
     def authenticate(self, request, code=None):
-        print("hell torment", code)
+        # print("hell torment", code)
         data = {
             "grant_type": "authorization_code",
             "code": code,
@@ -55,5 +55,6 @@ class DiscordAuthBackend(BaseBackend):
             user.set_unusable_password()
             user.save()
             discord_user, _ = DiscordUser.objects.get_or_create(user=user, defaults={"cached_username": username})
+            discord_user.save()
             return user
             

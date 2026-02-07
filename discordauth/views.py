@@ -1,6 +1,6 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.exceptions import PermissionDenied
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, logout
 from django.urls import reverse
 from dotenv import load_dotenv
 from urllib.parse import quote
@@ -33,3 +33,7 @@ def auth(request):
         return HttpResponseRedirect("/")
     else:
         return HttpResponseRedirect(reverse("discordauth:login"))
+
+def logout(request):
+    logout(request)
+    return HttpResponseRedirect("/")
