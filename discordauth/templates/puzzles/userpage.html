@@ -1,0 +1,21 @@
+{% extends "puzzles/base.html" %}
+
+{% block title %}ℝeservoir - {{ request.user.discorduser.cached_username }}{% endblock %}
+{% block nav-left %}
+<a href="/">Hunts</a>
+{% endblock %}
+{% block content %}
+<center><h1>{{ request.user.discorduser.cached_username }}</h1></center>
+
+<center>
+<form autocomplete="off" action="{% url 'discordauth:update_discord_user' %}" method="post">
+{% csrf_token %}
+<fieldset>
+    <legend><h3>Update User Details</h3></legend>
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    {{ update_user_form }}
+    <button class="submit_button" onclick="closeForm('update_puzzle_form')" type="submit">Update</button>
+</fieldset>
+</form>
+</center>
+{% endblock %}

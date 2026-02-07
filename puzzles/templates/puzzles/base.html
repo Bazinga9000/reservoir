@@ -22,7 +22,11 @@
         </span>
         <span class="nav-right">
             {% block nav-right %}
+            {% if request.user.is_authenticated %} 
+            <a href="{% url 'discordauth:userpage' %}">{{ request.user.discorduser.cached_username }}</a>
+            {% else %}
             <a href="{% url 'discordauth:login' %}">Login</a>
+            {% endif %}
             {% endblock %}
         </span>
     </div>
