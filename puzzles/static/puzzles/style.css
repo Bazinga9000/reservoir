@@ -98,6 +98,10 @@ fieldset {
   padding: 5px;
 }
 
+.wsiwo {
+  color: var(--ctp-mocha-flamingo)
+}
+
 .puzzles_list {
   display: flex;
   flex-wrap: wrap;

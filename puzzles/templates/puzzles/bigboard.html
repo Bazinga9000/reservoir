@@ -14,6 +14,23 @@
 <div class="meta_count countbox"><div class="icon">{% include 'puzzles/icons/layers.svg' %}</div><span class="bigboard_number">{{ hunt.meta_solves }}</span><br>Meta Solves</div>
 </center>
 
+<div class="round_info wsiwo">
+    <center><h2><i>What Should I Work On?</i></h2></center>
+    <div class="puzzles_list">
+    {% for puzzle in hunt.top_prio_puzzles %}
+    <a href="{% url 'puzzles:puzzlepage' puzzle.id %}" title="Priority: {{ puzzle.priority }}"><div class="puzzle_info status_{{ puzzle.status }}{% if puzzle.is_meta %} meta_info{% endif %}">
+        <center><span class="puzzle_name">{% if puzzle.is_meta %}META: {% endif %}{{ puzzle.name }}</span></center>
+        {% if puzzle.answer_set.all %}
+        <div class="answer_line"></div>
+        <center><span class="answer">
+        {{ puzzle.answer_set.all| join:", "}}
+        </span></center>
+        {% endif %}
+    </div></a>
+    {% endfor %}
+    </div>
+</div>
+
 {% for round in hunt.round_set.all %}
 <div class="round_info">
     <center><h2>{{ round.name }}</h2></center>

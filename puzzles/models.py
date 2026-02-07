@@ -55,6 +55,12 @@ class Hunt(models.Model):
 
     def roundless_puzzles(self):
         return self.puzzle_set.filter(rounds=None).all()
+    
+    def top_prio_puzzles(self):
+        puzzle_max = 10
+        puzzles = self.puzzle_set.filter(~models.Q(status__exact=PuzzleStatus.SOLVED)).all()[:puzzle_max]
+        return sorted(puzzles, key=(lambda p: (-p.priority(), p.name)))
+        
 
 class Round(models.Model):
     name = models.CharField(max_length=255)
