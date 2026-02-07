@@ -34,6 +34,6 @@ def auth(request):
     else:
         return HttpResponseRedirect(reverse("discordauth:login"))
 
-def logout(request):
+def logout_view(request):
     logout(request)
     return HttpResponseRedirect("/")
