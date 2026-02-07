@@ -163,7 +163,7 @@ a:hover {
 }
 
 .new_puzzle_icon svg:hover {
-  color: var(--mantle);
+  color: var(--surface2);
   cursor: pointer;
 }
 
