@@ -2,7 +2,13 @@
 <html lang="en">
 {% load static %}
 <head>
-    <link rel="stylesheet" href="{% static 'puzzles/style.css' %}">
+    {% if request.user.is_authenticated %} 
+    {% with 'puzzles/themes/'|add:request.user.discorduser.chosen_theme|add:'.css' as css_url %}
+    <link rel="stylesheet" href="{% static css_url %}" />
+    {% endwith %} {% else %}
+    <link rel="stylesheet" href="{% static 'puzzles/themes/mocha.css' %}" 2/>
+    {% endif %}
+    <link rel="stylesheet" href="{% static 'puzzles/style.css' %}" />
     <title>{% block title %}ℝeservoir{% endblock %}</title>
     <link rel="shortcut icon" type="image/icon" href="{% static 'favicon.ico' %}" >
 </head>
