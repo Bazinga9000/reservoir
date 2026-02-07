@@ -10,7 +10,7 @@ load_dotenv()
 
 DISCORD_CLIENT_ID = os.getenv("DISCORD_CLIENT_ID")
 DISCORD_CLIENT_SECRET = os.getenv("DISCORD_CLIENT_SECRET")
-REDIRECT_URI = os.getenv("REDIRECT_URI")
+DISCORD_REDIRECT_URI = os.getenv("DISCORD_REDIRECT_URI")
     
 class DiscordAuthBackend(BaseBackend):
     def get_user(self, user_id):
@@ -24,7 +24,7 @@ class DiscordAuthBackend(BaseBackend):
         data = {
             "grant_type": "authorization_code",
             "code": code,
-            "redirect_uri": REDIRECT_URI
+            "redirect_uri": DISCORD_REDIRECT_URI
         }
         headers = {
             "Content-Type": "application/x-www-form-urlencoded"

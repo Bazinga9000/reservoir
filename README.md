@@ -40,5 +40,5 @@ This site relies on Discord as an authentication provider. You will need to set 
 ```
 DISCORD_CLIENT_ID = <client ID>
 DISCORD_CLIENT_SECRET = <client Secret>
-REDIRECT_URI = <redirect URI you entered into Discord>
+DISCORD_REDIRECT_URI = <redirect URI you entered into Discord>
 ```
