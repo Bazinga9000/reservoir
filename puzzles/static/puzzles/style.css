@@ -34,6 +34,12 @@ input, select, button {
   padding: 2px;
 }
 
+button:hover {
+  background-color: var(--mantle);
+  cursor: pointer;
+  user-select: none;
+}
+
 fieldset {
   border-color: inherit;
 }
@@ -266,4 +272,41 @@ a:hover {
 
 .hunt_right {
   text-align: right;
+}
+
+
+.puzzle_tab {
+  overflow: hidden;
+  border: 1px solid var(--text);
+  background-color: var(--base);
+}
+
+/* Style the buttons that are used to open the tab content */
+.puzzle_tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.puzzle_tab button:hover {
+  background-color: var(--mantle);
+}
+
+/* Create an active/current tablink class */
+.puzzle_tab button.active {
+  background-color: var(--surface2);
+}
+
+/* Style the tab content */
+.puzzle_tab_content {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid var(--text);
+  border-top: none;
+  height: 80%;
 }
