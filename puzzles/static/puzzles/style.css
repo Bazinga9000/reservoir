@@ -1,5 +1,3 @@
-@import url('https://cdn.jsdelivr.net/npm/@catppuccin/palette/css/catppuccin.css');
-
 @font-face {
     font-family: "fairfaxhd";
     src:
@@ -9,8 +7,8 @@
 }
 
 body {
-    background-color: var(--ctp-mocha-crust);
-    color: var(--ctp-mocha-text);
+    background-color: var(--base);
+    color: var(--text);
     font-family: "fairfaxhd", sans-serif;
     font-size: 18px;
     margin: auto;
@@ -25,7 +23,7 @@ input, select, button {
   font-family: "fairfaxhd", sans-serif;
   background-color: inherit;
   color: inherit;
-  border-color: var(--ctp-mocha-text);
+  border-color: var(--text);
   font-size: inherit;
 
   border-width: 2px;
@@ -34,6 +32,12 @@ input, select, button {
 
   margin: 2px;
   padding: 2px;
+}
+
+button:hover {
+  background-color: var(--mantle);
+  cursor: pointer;
+  user-select: none;
 }
 
 fieldset {
@@ -60,31 +64,31 @@ fieldset {
 }
 
 .total_count {
-  color: var(--ctp-mocha-rosewater);
+  color: var(--rosewater);
 }
 
 .locked_count {
-  color: var(--ctp-mocha-red);
+  color: var(--red);
 }
 
 .solved_count {
-  color: var(--ctp-mocha-green);
+  color: var(--green);
 }
 
 .open_count {
-  color: var(--ctp-mocha-yellow);
+  color: var(--yellow);
 }
 
 .meta_count {
-  color: var(--ctp-mocha-lavender);
+  color: var(--lavender);
 }
 
 .answer {
-  color: var(--ctp-mocha-green);
+  color: var(--green);
 }
 
 .meta_name {
-  color: var(--ctp-mocha-lavender);
+  color: var(--lavender);
   border: 5px solid;
   border-radius: 5px;
   padding: 5px;
@@ -93,9 +97,13 @@ fieldset {
 
 .round_info {
   border: 5px solid;
-  color: var(--ctp-mocha-text);
+  color: var(--text);
   margin: 15px;
   padding: 5px;
+}
+
+.wsiwo {
+  color: var(--flamingo)
 }
 
 .puzzles_list {
@@ -119,7 +127,7 @@ fieldset {
 }
 
 .puzzle_info:hover {
-  background-color: var(--ctp-mocha-surface2);
+  background-color: var(--mantle);
 }
 
 .puzzle_name {
@@ -147,69 +155,69 @@ fieldset {
 .new_puzzle_icon svg {
   width: auto;
   height: calc(24px + 1em + 2px);
-  color: var(--ctp-mocha-text);
+  color: var(--text);
 }
 
 /* TODO: prettier link colors maybe? */
 a {
   text-decoration: none;
-  color: var(--ctp-mocha-sapphire);
+  color: var(--sapphire);
 }
 
 a:hover {
-    color: var(--ctp-mocha-blue);
+    color: var(--blue);
 }
 
 .new_puzzle_icon svg:hover {
-  color: var(--ctp-mocha-surface2);
+  color: var(--surface2);
   cursor: pointer;
 }
 
 /* locked */
 .status_LO {
-  color: var(--ctp-mocha-red);
+  color: var(--red);
 }
 
 /* stuck */
 .status_ST {
-  color: var(--ctp-mocha-peach);
+  color: var(--peach);
 }
 
 /* in progress */
 .status_IP {
-  color: var(--ctp-mocha-yellow);
+  color: var(--yellow);
 }
 
 /* now extract somehow */
 .status_EX {
-  color: var(--ctp-mocha-sky);
+  color: var(--sky);
 }
 
 /* solved */
 .status_SL {
-  color: var(--ctp-mocha-green);
+  color: var(--green);
 }
 
 .cancel_button {
-  color: var(--ctp-mocha-red);
-  border-color: var(--ctp-mocha-red);
+  color: var(--red);
+  border-color: var(--red);
 }
 
 .cancel_button:hover {
-  background-color: var(--ctp-mocha-surface2);
+  background-color: var(--mantle);
   cursor: pointer;
   user-select: none;
 }
 
 .submit_button {
-  border-color: var(--ctp-mocha-green);
+  border-color: var(--green);
   min-height: 100%;
-  color: var(--ctp-mocha-green);
-  background-color: var(--ctp-mocha-crust);
+  color: var(--green);
+  background-color: var(--base);
 }
 
 .submit_button:hover {
-  background-color: var(--ctp-mocha-surface2);
+  background-color: var(--mantle);
   cursor: pointer;
   user-select: none;
 }
@@ -223,18 +231,18 @@ a:hover {
 }
 
 .popup_form fieldset {
-  background-color: var(--ctp-mocha-crust);
+  background-color: var(--base);
 }
 
 .popup_form legend {
-  -webkit-text-stroke: 5px var(--ctp-mocha-crust);
+  -webkit-text-stroke: 5px var(--base);
   paint-order: stroke fill;
 }
 
 .nav {
   font-size: 24px;
-  background-color: var(--ctp-mocha-surface0);
-  border-bottom: 2px solid var(--ctp-mocha-text); 
+  background-color: var(--mantle);
+  border-bottom: 2px solid var(--text); 
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -244,4 +252,61 @@ a:hover {
 .nav-right {
   text-align: right;
   padding-right: 16px
+}
+
+.hunt_info {
+  font-size: 40px;
+  border: 2px solid var(--text); 
+  border-radius: 8px;
+  color: var(--text);
+  display: flex;
+  justify-content: space-between;
+  width: 50%;
+  padding: 8px;
+  margin: 8px;
+}
+
+.hunt_info:hover {
+  background-color: var(--mantle);
+}
+
+.hunt_right {
+  text-align: right;
+}
+
+
+.puzzle_tab {
+  overflow: hidden;
+  border: 1px solid var(--text);
+  background-color: var(--base);
+}
+
+/* Style the buttons that are used to open the tab content */
+.puzzle_tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.puzzle_tab button:hover {
+  background-color: var(--mantle);
+}
+
+/* Create an active/current tablink class */
+.puzzle_tab button.active {
+  background-color: var(--surface2);
+}
+
+/* Style the tab content */
+.puzzle_tab_content {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid var(--text);
+  border-top: none;
+  height: 80%;
 }

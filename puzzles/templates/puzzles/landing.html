@@ -1,0 +1,18 @@
+{% extends "puzzles/base.html" %}
+{% block nav-left %}
+<b>Hunts</b>
+{% endblock %}
+{% block content %}
+<center><h1>ℝeservoir &mdash; {{ team_name }}</h1></center>
+
+<div class="hunt_list">
+{% for hunt in hunts %}
+    <center><a href="{% url 'puzzles:bigboard' hunt.id %}"><div class="hunt_info">
+        <span class="hunt_left">{{ hunt.name }}</span>
+        <span class="hunt_right">
+            <span class="total_count">{{ hunt.total_puzzles }}</span>/<span class="locked_count">{{ hunt.num_locked }}</span>/<span class="solved_count">{{ hunt.num_solved }}</span>/<span class="open_count">{{ hunt.num_available }}</span>/<span class="meta_count">{{ hunt.meta_solves }}</span>
+        </span>
+    </div></a></center>
+{% endfor %}
+</div>
+{% endblock %}

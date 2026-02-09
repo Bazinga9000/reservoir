@@ -8,9 +8,9 @@ from .models import DiscordUser
 
 load_dotenv()
 
-CLIENT_ID = os.getenv("CLIENT_ID")
-CLIENT_SECRET = os.getenv("CLIENT_SECRET")
-REDIRECT_URI = os.getenv("REDIRECT_URI")
+DISCORD_CLIENT_ID = os.getenv("DISCORD_CLIENT_ID")
+DISCORD_CLIENT_SECRET = os.getenv("DISCORD_CLIENT_SECRET")
+DISCORD_REDIRECT_URI = os.getenv("DISCORD_REDIRECT_URI")
     
 class DiscordAuthBackend(BaseBackend):
     def get_user(self, user_id):
@@ -20,11 +20,11 @@ class DiscordAuthBackend(BaseBackend):
             return None
 
     def authenticate(self, request, code=None):
-        print("hell torment", code)
+        # print("hell torment", code)
         data = {
             "grant_type": "authorization_code",
             "code": code,
-            "redirect_uri": REDIRECT_URI
+            "redirect_uri": DISCORD_REDIRECT_URI
         }
         headers = {
             "Content-Type": "application/x-www-form-urlencoded"
@@ -32,7 +32,7 @@ class DiscordAuthBackend(BaseBackend):
         if code is None:
             return None
         else:
-            req = requests.post(f"https://discord.com/api/oauth2/token", data=data, headers=headers, auth=(CLIENT_ID, CLIENT_SECRET))
+            req = requests.post(f"https://discord.com/api/oauth2/token", data=data, headers=headers, auth=(DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET))
             if req.status_code >= 300:
                 return None
             resp = req.json()
@@ -55,5 +55,6 @@ class DiscordAuthBackend(BaseBackend):
             user.set_unusable_password()
             user.save()
             discord_user, _ = DiscordUser.objects.get_or_create(user=user, defaults={"cached_username": username})
+            discord_user.save()
             return user
             

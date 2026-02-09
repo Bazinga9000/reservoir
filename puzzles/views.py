@@ -1,10 +1,13 @@
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
 from .models import Hunt, Round, Puzzle, PuzzleStatus, Answer
 from .forms import NewPuzzleForm, UpdatePuzzleForm
+from os import getenv
 
+@login_required()
 def bigboard(request, hunt_id):
     hunt = get_object_or_404(Hunt, pk=hunt_id)
 
@@ -13,6 +16,7 @@ def bigboard(request, hunt_id):
         "new_puzzle_form": NewPuzzleForm(hunt)
     })
 
+@login_required()
 def puzzlepage(request, puzzle_id):
     puzzle = get_object_or_404(Puzzle, pk=puzzle_id)
     return render(request, "puzzles/puzzlepage.html", {
@@ -63,3 +67,9 @@ def new_puzzle(request, hunt_id):
             puzzle.save()
     
     return HttpResponseRedirect(reverse("puzzles:bigboard", args=(hunt.id,)))
+
+def landing(request):
+    return render(request, "puzzles/landing.html", {
+        "hunts": Hunt.objects.all(),
+        "team_name": getenv("TEAM_NAME")
+    })

@@ -9,8 +9,17 @@
 <h2>Round{{puzzle.rounds.all.count|pluralize}}: {{ puzzle.rounds.all| join:", "}}</h2>
 <button onclick="showForm('update_puzzle_form')">Update Details</button>
 
-<iframe src="{{ puzzle.url }}", width="100%" height="100%"></iframe>
-<iframe src="{{ puzzle.sheet_url }}", width="100%" height="100%"></iframe>
+<div class="puzzle_tab">
+  <button class="puzzle_tab_link" onclick="openTab(event, 'huntpage')">Hunt Page</button>
+  <button class="puzzle_tab_link" onclick="openTab(event, 'sheet')" id="default_tab">Sheet</button>
+</div>
+
+<div id="huntpage" class="puzzle_tab_content">
+  <iframe src="{{ puzzle.url }}", width="100%" height="700px"></iframe>
+</div>
+<div id="sheet" class="puzzle_tab_content">
+  <iframe src="{{ puzzle.sheet_url }}", width="100%" height="700px"></iframe>
+</div>
 
 <textarea id="chat-log" cols="100" rows="20"></textarea><br />
 <input id="chat-message-input" type="text" size="100"><br>
@@ -58,6 +67,25 @@
         selectedForm.style.display = 'none';
       }
     }
+
+    function openTab(evt, tabId) {
+      var i, tabcontent, tablinks;
+
+      tabcontent = document.getElementsByClassName("puzzle_tab_content");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+
+      tablinks = document.getElementsByClassName("puzzle_tab_link");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+
+      document.getElementById(tabId).style.display = "block";
+      evt.currentTarget.className += " active";
+    } 
+
+    document.getElementById("default_tab").click();
 
     // Chat functionality -----
 
