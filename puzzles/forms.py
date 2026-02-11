@@ -4,6 +4,7 @@ from .models import PuzzleStatus, Puzzle, Answer, DiscordUser, Theme
 
 class NewPuzzleForm(forms.Form):
     name = forms.CharField(label="Puzzle Name", max_length=255)
+    description = forms.CharField(label="Description", max_length=1000, required=False)
     status = forms.ChoiceField(choices=PuzzleStatus.choices)
     rounds = forms.MultipleChoiceField(choices=[])
     url = forms.URLField(label="Puzzle URL", required=False)
@@ -25,6 +26,7 @@ class NewPuzzleForm(forms.Form):
         puzzle.status = self.cleaned_data["status"]
         puzzle.url = self.cleaned_data["url"]
         puzzle.is_meta = self.cleaned_data["is_meta"]
+        puzzle.description = self.cleaned_data["description"]
         puzzle.regenerate_puzzle_sheet()
         puzzle.save()
         for hunt_round in self.cleaned_data["rounds"]:
@@ -37,6 +39,7 @@ class NewPuzzleForm(forms.Form):
 
 class UpdatePuzzleForm(forms.Form):
     name = forms.CharField(label="Puzzle Name", max_length=255)
+    description = forms.CharField(label="Description", max_length=1000, required=False)
     rounds = forms.MultipleChoiceField(choices=[])
     status = forms.ChoiceField(choices=PuzzleStatus.choices)
     url = forms.URLField(label="Puzzle URL", required=False)
@@ -49,6 +52,7 @@ class UpdatePuzzleForm(forms.Form):
         hunt = puzzle.hunt
 
         self.fields["name"].initial = puzzle.name
+        self.fields["description"].initial = puzzle.description
 
         self.fields["rounds"] = forms.MultipleChoiceField(choices=[
             (r.id, r.name) for r in hunt.round_set.all()
@@ -66,6 +70,9 @@ class UpdatePuzzleForm(forms.Form):
         puzzle.name = self.cleaned_data["name"]
         if old_name != puzzle.name:
             puzzle.rename_puzzle_sheet()
+
+        puzzle.description = self.cleaned_data["description"]
+
 
         puzzle.rounds.clear()
         for hunt_round in self.cleaned_data["rounds"]:

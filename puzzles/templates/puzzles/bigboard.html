@@ -4,6 +4,20 @@
 {% block nav-left %}
 <a href="/">Hunts</a> > <b>{{ hunt.name }}</b>
 {% endblock %}
+{% partialdef puzzlebox %}
+    <a href="{% url 'puzzles:puzzlepage' puzzle.id %}" title="Priority: {{ puzzle.priority }}"><div class="tooltip puzzle_info status_{{ puzzle.status }}{% if puzzle.is_meta %} meta_info{% endif %}">
+        {% if puzzle.description %}
+        <span class="tooltip_text">{{ puzzle.description }}</span>
+        {% endif %}
+        <center><span class="puzzle_name">{% if puzzle.is_meta %}META: {% endif %}{{ puzzle.name }}</span></center>
+        {% if puzzle.answer_set.all %}
+        <div class="answer_line"></div>
+        <center><span class="answer">
+        {{ puzzle.answer_set.all| join:", "}}
+        </span></center>
+        {% endif %}
+    </div></a>
+{% endpartialdef puzzlebox %}
 {% block content %}
 <center>
 <h1>{{ hunt.name }}</h1>
@@ -18,15 +32,7 @@
     <center><h2><i>What Should I Work On?</i></h2></center>
     <div class="puzzles_list">
     {% for puzzle in hunt.top_prio_puzzles %}
-    <a href="{% url 'puzzles:puzzlepage' puzzle.id %}" title="Priority: {{ puzzle.priority }}"><div class="puzzle_info status_{{ puzzle.status }}{% if puzzle.is_meta %} meta_info{% endif %}">
-        <center><span class="puzzle_name">{% if puzzle.is_meta %}META: {% endif %}{{ puzzle.name }}</span></center>
-        {% if puzzle.answer_set.all %}
-        <div class="answer_line"></div>
-        <center><span class="answer">
-        {{ puzzle.answer_set.all| join:", "}}
-        </span></center>
-        {% endif %}
-    </div></a>
+    {% partial puzzlebox %}
     {% endfor %}
     </div>
 </div>
@@ -36,15 +42,7 @@
     <center><h2>{{ round.name }}</h2></center>
     <div class="puzzles_list">
     {% for puzzle in round.puzzles_ordered %}
-    <a href="{% url 'puzzles:puzzlepage' puzzle.id %}" title="Priority: {{ puzzle.priority }}"><div class="puzzle_info status_{{ puzzle.status }}{% if puzzle.is_meta %} meta_info{% endif %}">
-        <center><span class="puzzle_name">{% if puzzle.is_meta %}META: {% endif %}{{ puzzle.name }}</span></center>
-        {% if puzzle.answer_set.all %}
-        <div class="answer_line"></div>
-        <center><span class="answer">
-        {{ puzzle.answer_set.all| join:", "}}
-        </span></center>
-        {% endif %}
-    </div></a>
+    {% partial puzzlebox %}
     {% endfor %}
     <span class="new_puzzle_icon"><a onclick="showForm('new_puzzle_form', '{{ round.id }}')">{% include 'puzzles/icons/plus.svg' %}</a></span>
     </div>

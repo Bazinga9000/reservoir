@@ -129,6 +129,7 @@ class Puzzle(models.Model):
     url = models.URLField()
     is_meta = models.BooleanField(default=False)
     sheet_id = models.CharField(max_length=255, default="")
+    description = models.CharField(max_length=1000, default="")
 
     status = models.CharField(max_length=2, choices=PuzzleStatus.choices, default=PuzzleStatus.LOCKED)
 
