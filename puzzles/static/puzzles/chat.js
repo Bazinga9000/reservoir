@@ -24,7 +24,8 @@ function initChat(puzzleId) {
     latestMessageId = message.id;
 
     const sentDate = new Date(message.sent_date);
-    const elem = document.createElement("p");
+    const elem = document.createElement("div");
+    elem.className = "chat-msg";
     elem.innerHTML = `
       <span class="chat-msg-user"></span> <span class="chat-msg-date"></span><br />
       <span class="chat-msg-content"></span>
@@ -36,6 +37,15 @@ function initChat(puzzleId) {
 
     chatLog.appendChild(elem);
     return elem;
+  }
+
+  function chatLogIsScrolledToBottom() {
+    // https://stackoverflow.com/a/42860948
+    return chatLog.scrollHeight - chatLog.scrollTop - chatLog.clientHeight < 1;
+  }
+
+  function scrollChatLogToBottom() {
+    chatLog.scrollTop = chatLog.scrollHeight;
   }
 
   // websocket handling =====================
@@ -74,9 +84,13 @@ function initChat(puzzleId) {
         if (!historyPopulated) {
           messageQueue.push(data.message);
         } else {
+          const wasAtBottom = chatLogIsScrolledToBottom();
           appendNewMessage(data.message);
+          if (wasAtBottom)
+            scrollChatLogToBottom();
         }
       } else if (data.type == "history") {
+        const wasAtBottom = chatLogIsScrolledToBottom();
         for (const message of data.messages) {
           appendNewMessage(message);
         }
@@ -84,6 +98,8 @@ function initChat(puzzleId) {
           appendNewMessage(message);
         }
         historyPopulated = true;
+        if (wasAtBottom)
+          scrollChatLogToBottom();
       } else {
         console.error("Unknown message received:", data);
       }
@@ -91,7 +107,9 @@ function initChat(puzzleId) {
 
     chatSocket.onclose = (e) => {
       console.log("Socket closed, attempting reconnect in 1 second");
-      setTimeout(() => { connect(); }, 1000);
+      setTimeout(() => {
+        connect();
+      }, 1000);
     };
   }
 
