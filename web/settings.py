@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 AUTHENTICATION_BACKENDS = ["puzzles.backend.DiscordAuthBackend", "django.contrib.auth.backends.ModelBackend"]
 
 INSTALLED_APPS = [
+    'daphne',  # keep at beginning
     'puzzles.apps.PuzzlesConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -121,3 +122,15 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]  # new
 
 LOGIN_URL = "/login"
+
+# Channels
+
+ASGI_APPLICATION = 'web.asgi.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('127.0.0.1', 6379)],
+        },
+    }
+}

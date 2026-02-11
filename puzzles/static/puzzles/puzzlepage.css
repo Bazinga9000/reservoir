@@ -1,0 +1,50 @@
+#puzzle-page-body {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+}
+
+#puzzle-tab-content-container {
+  flex: 5 1 0;
+}
+
+#chat-sidebar {
+  flex: 1 1 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+#chat-log {
+  flex: 1 1 0;
+  overflow-y: scroll;
+  overflow-wrap: anywhere;
+  padding: 6px 8px;
+}
+
+#chat-bottom-bar {
+  flex: 0 0 auto;
+  display: flex;
+  padding: 6px;
+}
+
+#chat-message-input {
+  flex: 1 1 0;
+}
+
+#chat-message-submit {
+  flex: 0 0 auto;
+}
+
+.chat-msg {
+  margin-bottom: 8px;
+}
+
+.chat-msg-user {
+  font-weight: bold;
+  color: var(--blue);
+}
+
+.chat-msg-date {
+  font-size: 75%;
+  color: var(--overlay1);
+}

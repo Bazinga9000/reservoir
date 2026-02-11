@@ -305,10 +305,49 @@ a:hover {
 /* Style the tab content */
 .puzzle_tab_content {
   display: none;
-  padding: 6px 12px;
   border: 1px solid var(--text);
   border-top: none;
-  height: 80%;
+  height: 100%;
+}
+
+.tooltip {
+  position: relative;
+}
+
+.tooltip .tooltip_text {
+    visibility: hidden;
+    max-width: 33vw; /* Maximum width to avoid being too wide */
+    width: max-content;
+    background-color: var(--crust);
+    color: var(--text);
+    text-align: center;
+    border-radius: 6px;
+    border: 1px solid var(--text);
+    padding: 10px;
+    position: absolute;
+    z-index: 1;
+    bottom: 150%;
+    left: 50%;
+    transform: translateX(-50%);
+    word-wrap: break-word;
+    opacity: 0;
+    transition: opacity 0.1s;
+}
+
+.tooltip .tooltip_text::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--text) transparent transparent transparent;
+}
+
+.tooltip:hover .tooltip_text {
+    visibility: visible;
+    opacity: 1;
 }
 
 .tooltip {

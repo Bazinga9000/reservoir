@@ -1,4 +1,9 @@
 {% extends "puzzles/base.html" %}
+{% load static %}
+
+{% block head_extra %}
+<link rel="stylesheet" href="{% static 'puzzles/puzzlepage.css' %}" />
+{% endblock %}
 
 {% block title %}ℝeservoir - {{ puzzle.name }}{% endblock %}
 {% block nav-left %}
@@ -14,11 +19,23 @@
   <button class="puzzle_tab_link" onclick="openTab(event, 'sheet')" id="default_tab">Sheet</button>
 </div>
 
-<div id="huntpage" class="puzzle_tab_content">
-  <iframe src="{{ puzzle.url }}", width="100%" height="700px"></iframe>
-</div>
-<div id="sheet" class="puzzle_tab_content">
-  <iframe src="{{ puzzle.sheet_url }}", width="100%" height="700px"></iframe>
+<div id="puzzle-page-body">
+  <div id="puzzle-tab-content-container">
+    <div id="huntpage" class="puzzle_tab_content">
+      <iframe src="{{ puzzle.url }}" width="100%" height="100%"></iframe>
+    </div>
+    <div id="sheet" class="puzzle_tab_content">
+      <iframe src="{{ puzzle.sheet_url }}" width="100%" height="100%"></iframe>
+    </div>
+  </div>
+
+  <div id="chat-sidebar">
+    <div id="chat-log" style="background-color: #8883"></div>
+    <div id="chat-bottom-bar">
+      <input id="chat-message-input" type="text" />
+      <input id="chat-message-submit" type="button" value="Send" />
+    </div>
+  </div>
 </div>
 
 <div class="popup_form" id="update_puzzle_form">
@@ -41,6 +58,8 @@
     <button class="submit_button" onclick="closeForm('update_puzzle_form')" type="submit">Update</button>
 </fieldset>
 </form>
+
+<script src="{% static 'puzzles/chat.js' %}"></script>
 <script>
     function showForm(formId) {
       // Get all forms
@@ -81,5 +100,9 @@
     } 
 
     document.getElementById("default_tab").click();
+
+    // Chat initialization
+    const puzzleId = "{{ puzzle.id }}";
+    initChat(puzzleId);
 </script>
 {% endblock %}
