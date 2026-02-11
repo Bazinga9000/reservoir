@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from . import google
 
@@ -173,3 +174,13 @@ class Answer(models.Model):
 
     def __str__(self):
         return f"{self.answer_text}"
+
+
+class ChatMessage(models.Model):
+    puzzle = models.ForeignKey(Puzzle, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    sent_date = models.DateTimeField(auto_now_add=True)
+    content = models.TextField()
+
+    def __str__(self):
+        return self.content

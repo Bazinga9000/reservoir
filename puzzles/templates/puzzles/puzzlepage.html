@@ -1,4 +1,5 @@
 {% extends "puzzles/base.html" %}
+{% load static %}
 
 {% block title %}ℝeservoir - {{ puzzle.name }}{% endblock %}
 {% block nav-left %}
@@ -21,7 +22,7 @@
   <iframe src="{{ puzzle.sheet_url }}", width="100%" height="700px"></iframe>
 </div>
 
-<textarea id="chat-log" cols="100" rows="20"></textarea><br />
+<div id="chat-log" style="background-color: #8883"></div>
 <input id="chat-message-input" type="text" size="100"><br>
 <input id="chat-message-submit" type="button" value="Send">
 
@@ -46,6 +47,7 @@
 </fieldset>
 </form>
 
+<script src="{% static 'puzzles/chat.js' %}"></script>
 <script>
     function showForm(formId) {
       // Get all forms
@@ -87,35 +89,8 @@
 
     document.getElementById("default_tab").click();
 
-    // Chat functionality -----
-
-    const puzzleId = '{{ puzzle.id }}';
-    const chatSocket = new WebSocket(
-      `ws://${window.location.host}/ws/chat/${puzzleId}/`
-    );
-
-    chatSocket.onmessage = function(e) {
-      const data = JSON.parse(e.data);
-      document.querySelector('#chat-log').value += (data.message + '\n');
-    };
-
-    chatSocket.onclose = function(e) {
-      console.error('Chat socket closed unexpectedly');
-    };
-
-    const chatInput = document.querySelector('#chat-message-input');
-    const chatSubmit = document.querySelector('#chat-message-submit');
-
-    chatInput.onkeyup = function(e) {
-      if (e.key === 'Enter')
-        chatSubmit.click();
-    };
-
-    chatSubmit.onclick = function(e) {
-      chatSocket.send(JSON.stringify({
-        'message': chatInput.value
-      }));
-      chatInput.value = '';
-    };
+    // Chat initialization
+    const puzzleId = "{{ puzzle.id }}";
+    initChat(puzzleId);
 </script>
 {% endblock %}
