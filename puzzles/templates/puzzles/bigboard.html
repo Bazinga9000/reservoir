@@ -5,7 +5,7 @@
 <a href="/">Hunts</a> > <b>{{ hunt.name }}</b>
 {% endblock %}
 {% partialdef puzzlebox %}
-    <a href="{% url 'puzzles:puzzlepage' puzzle.id %}" title="Priority: {{ puzzle.priority }}"><div class="tooltip puzzle_info status_{{ puzzle.status }}{% if puzzle.is_meta %} meta_info{% endif %}">
+    <a href="{% url 'puzzles:puzzlepage' puzzle.id %}"><div class="tooltip puzzle_info status_{{ puzzle.status }}{% if puzzle.is_meta %} meta_info{% endif %}">
         {% if puzzle.description %}
         <span class="tooltip_text">{{ puzzle.description }}</span>
         {% endif %}
