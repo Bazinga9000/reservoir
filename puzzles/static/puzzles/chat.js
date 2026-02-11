@@ -78,8 +78,6 @@ function initChat(puzzleId) {
     chatSocket.onmessage = (e) => {
       const data = JSON.parse(e.data);
 
-      console.log(data);
-
       if (data.type === "message") {
         if (!historyPopulated) {
           messageQueue.push(data.message);

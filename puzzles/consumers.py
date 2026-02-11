@@ -53,8 +53,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         
         msg_type = data.get('type')
 
-        print(data)
-
         if msg_type == 'get_history':
             after_id = data.get('after', 0)
             if isinstance(after_id, int):
@@ -67,7 +65,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     username=F('user__discorduser__cached_username')
                 )
                 messages = [msg async for msg in qset]
-                print(messages)
+
                 await self.send(text_data=json.dumps(
                     {'type': 'history', 'messages': messages},
                     cls=DjangoJSONEncoder
