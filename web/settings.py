@@ -30,11 +30,10 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-AUTHENTICATION_BACKENDS = ["discordauth.backend.DiscordAuthBackend", "django.contrib.auth.backends.ModelBackend"]
+AUTHENTICATION_BACKENDS = ["puzzles.backend.DiscordAuthBackend", "django.contrib.auth.backends.ModelBackend"]
 
 INSTALLED_APPS = [
     'daphne',  # keep at beginning
-    'discordauth.apps.AuthConfig',
     'puzzles.apps.PuzzlesConfig',
     'django.contrib.admin',
     'django.contrib.auth',

@@ -24,9 +24,9 @@
         <span class="nav-right">
             {% block nav-right %}
             {% if request.user.is_authenticated %} 
-            <a href="{% url 'discordauth:userpage' %}">{{ request.user.discorduser.cached_username }}</a>
+            <a href="{% url 'puzzles:userpage' %}">{{ request.user.discorduser.cached_username }}</a>
             {% else %}
-            <a href="{% url 'discordauth:login' %}">Login</a>
+            <a href="{% url 'puzzles:login' %}">Login</a>
             {% endif %}
             {% endblock %}
         </span>

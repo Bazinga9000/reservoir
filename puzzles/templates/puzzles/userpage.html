@@ -8,7 +8,7 @@
 <center><h1>{{ request.user.discorduser.cached_username }}</h1></center>
 
 <center>
-<form autocomplete="off" action="{% url 'discordauth:update_discord_user' %}" method="post">
+<form autocomplete="off" action="{% url 'puzzles:update_discord_user' %}" method="post">
 {% csrf_token %}
 <fieldset>
     <legend><h3>Update User Details</h3></legend>
