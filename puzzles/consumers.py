@@ -59,8 +59,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
             after_id = data.get('after', 0)
             if isinstance(after_id, int):
                 qset = ChatMessage.objects.filter(
-                    puzzle__id=self.puzzle_id,id__gt=after_id
-                ).values(
+                    puzzle__id=self.puzzle_id, id__gt=after_id
+                ).order_by('id').values(
                     'id',
                     'sent_date',
                     'content',
@@ -106,5 +106,5 @@ class ChatConsumer(AsyncWebsocketConsumer):
     # Receive a chat.message message from room group
     async def chat_message(self, event):
         message_json = event['json']
-        # Send to socket
+        # Send to client
         await self.send(text_data=message_json)
