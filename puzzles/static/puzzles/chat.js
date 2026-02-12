@@ -31,6 +31,8 @@ function initChat(puzzleId) {
       <span class="chat-msg-content"></span>
     `;
     elem.querySelector(".chat-msg-user").textContent = message.username;
+    console.log(message)
+    elem.querySelector(".chat-msg-user").style.color = "var(--" + message.chat_color + ")"
     elem.querySelector(".chat-msg-date").textContent =
       dateFormatter.format(sentDate);
     elem.querySelector(".chat-msg-content").textContent = message.content;

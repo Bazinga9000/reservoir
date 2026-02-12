@@ -19,6 +19,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             return
         
         self.username = await self._get_username()
+        self.chat_color = await self._get_chat_color()
         self.room_group_name = f"chat_puzz_{self.puzzle_id}"
 
         await self.channel_layer.group_add(
@@ -41,6 +42,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
     def _get_username(self):
         return self.user.discorduser.cached_username
 
+    @database_sync_to_async
+    def _get_chat_color(self):
+        return self.user.discorduser.chat_color
+
     # Receive a message from the socket
     async def receive(self, text_data):
         try:
@@ -62,7 +67,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     'id',
                     'sent_date',
                     'content',
-                    username=F('user__discorduser__cached_username')
+                    username=F('user__discorduser__cached_username'),
+                    chat_color=F('user__discorduser__chat_color')
                 )
                 messages = [msg async for msg in qset]
 
@@ -89,7 +95,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 'id': msg_obj.id,
                 'username': self.username,
                 'sent_date': msg_obj.sent_date,
-                'content': chat_msg_content
+                'content': chat_msg_content,
+                'chat_color': self.chat_color
             }
             message_json = json.dumps(
                 {'type': 'message', 'message': message},

@@ -1,5 +1,5 @@
 from django import forms
-from .models import PuzzleStatus, Puzzle, Answer, DiscordUser, Theme
+from .models import PuzzleStatus, Puzzle, Answer, DiscordUser, Theme, Color
 
 
 class NewPuzzleForm(forms.Form):
@@ -95,6 +95,7 @@ class UpdatePuzzleForm(forms.Form):
 class UpdateDiscordUserForm(forms.Form):
     linked_gmail = forms.URLField(label="Google Email", required=False)
     chosen_theme = forms.ChoiceField(choices=Theme.choices)
+    chat_color = forms.ChoiceField(choices=Color.choices)
 
     def __init__(self, discord_user, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -102,8 +103,10 @@ class UpdateDiscordUserForm(forms.Form):
 
         self.fields["linked_gmail"].initial = discord_user.linked_gmail
         self.fields["chosen_theme"].initial = discord_user.chosen_theme
+        self.fields["chat_color"].initial = discord_user.chat_color
 
     def update_user(self, discord_user):
         discord_user.linked_gmail = self.cleaned_data["linked_gmail"]
         discord_user.chosen_theme = self.cleaned_data["chosen_theme"]
+        discord_user.chat_color = self.cleaned_data["chat_color"]
         discord_user.save()

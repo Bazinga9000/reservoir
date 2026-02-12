@@ -10,12 +10,29 @@ class Theme(models.TextChoices):
     MACCHIATO = "macchiato", "Macchiato"
     MOCHA = "mocha", "Mocha"
 
+class Color(models.TextChoices):
+    ROSEWATER = "rosewater", "Rosewater"
+    FLAMINGO = "flamingo", "Flamingo"
+    PINK = "pink", "Pink"
+    MAUVE = "mauve", "Mauve"
+    RED = "red", "Red"
+    MAROON = "maroon", "Maroon"
+    PEACH = "peach", "Peach"
+    YELLOW = "yellow", "Yellow"
+    GREEN = "green", "Green"
+    TEAL = "teal", "Teal"
+    SKY = "sky", "Sky"
+    SAPPHIRE = "sapphire", "Sapphire"
+    BLUE = "blue", "Blue"
+    LAVENDER = "lavender", "Lavender"
+
 class DiscordUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     cached_username = models.CharField(max_length=64)
 
     linked_gmail = models.EmailField(blank=True, max_length=255)
     chosen_theme = models.CharField(max_length=9, choices=Theme.choices, default=Theme.MOCHA)
+    chat_color = models.CharField(max_length=9, choices=Color.choices, default=Color.BLUE)
 
     def __str__(self):
         return f"{self.cached_username}"

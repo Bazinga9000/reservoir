@@ -5,7 +5,7 @@
 <a href="/">Hunts</a>
 {% endblock %}
 {% block content %}
-<center><h1>{{ request.user.discorduser.cached_username }}</h1></center>
+<center><h1 style="color: var(--{{ request.user.discorduser.chat_color }})">{{ request.user.discorduser.cached_username }}</h1></center>
 
 <center>
 <form autocomplete="off" action="{% url 'puzzles:update_discord_user' %}" method="post">
