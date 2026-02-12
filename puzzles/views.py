@@ -36,7 +36,7 @@ def auth(request):
         #     return HttpResponseRedirect(request.session["next"])
         return HttpResponseRedirect("/")
     else:
-        return HttpResponseRedirect(reverse("discordauth:login"))
+        return HttpResponseRedirect(reverse("puzzles:login"))
 
 def logout_view(request):
     logout(request)
@@ -59,7 +59,7 @@ def update_discord_user(request):
         if form.is_valid():
             form.update_user(du)
 
-    return HttpResponseRedirect(reverse("discordauth:userpage"))
+    return HttpResponseRedirect(reverse("puzzles:userpage"))
 
 
 @login_required()
