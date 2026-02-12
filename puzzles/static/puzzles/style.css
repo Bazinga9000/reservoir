@@ -18,7 +18,7 @@ body {
   margin: auto 8px;
 }
 
-input, select, button {
+input, select, button, textarea, code {
   border-style: solid;
   font-family: "fairfaxhd", sans-serif;
   background-color: inherit;
@@ -32,6 +32,20 @@ input, select, button {
 
   margin: 2px;
   padding: 2px;
+}
+
+code {
+  border: 1px dotted var(--text);
+  background-color: var(--crust);
+}
+
+
+table, th, td {
+  border: 1px solid var(--text);
+}
+
+table {
+  border-collapse: collapse;
 }
 
 button:hover {

@@ -31,11 +31,11 @@ function initChat(puzzleId) {
       <span class="chat-msg-content"></span>
     `;
     elem.querySelector(".chat-msg-user").textContent = message.username;
-    console.log(message)
     elem.querySelector(".chat-msg-user").style.color = "var(--" + message.chat_color + ")"
     elem.querySelector(".chat-msg-date").textContent =
       dateFormatter.format(sentDate);
-    elem.querySelector(".chat-msg-content").textContent = message.content;
+
+    elem.querySelector(".chat-msg-content").innerHTML = renderMessage(message);
 
     chatLog.appendChild(elem);
     return elem;
@@ -118,7 +118,7 @@ function initChat(puzzleId) {
   // UI event handling =====================
 
   chatInput.onkeyup = function (e) {
-    if (e.key === "Enter") chatSubmit.click();
+    if (e.key === "Enter" && !e.shiftKey) chatSubmit.click();
   };
 
   chatSubmit.onclick = function (e) {
@@ -130,4 +130,28 @@ function initChat(puzzleId) {
       chatInput.value = "";
     }
   };
+}
+
+// Message rendering
+function renderMessage(message) {
+
+  const entityMap = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+    '/': '&#x2F;',
+  }
+
+  function escapeHtml(html) {
+    return html.replace(/[&<>"'/]/g, (key) => entityMap[key])
+  }
+
+  var content = message.content;
+  content = content.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/,"");
+  content = escapeHtml(content);
+
+  return DOMPurify.sanitize(marked.parse(content, {gfm: true, breaks: true}))
+
 }
