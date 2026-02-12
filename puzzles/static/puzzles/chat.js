@@ -35,7 +35,7 @@ function initChat(puzzleId) {
     elem.querySelector(".chat-msg-date").textContent =
       dateFormatter.format(sentDate);
 
-    elem.querySelector(".chat-msg-content").innerHTML = renderMessage(message);
+    renderMessage(message, elem.querySelector(".chat-msg-content"));
 
     chatLog.appendChild(elem);
     return elem;
@@ -133,7 +133,7 @@ function initChat(puzzleId) {
 }
 
 // Message rendering
-function renderMessage(message) {
+function renderMessage(message, elem) {
 
   const entityMap = {
     '&': '&amp;',
@@ -148,10 +148,24 @@ function renderMessage(message) {
     return html.replace(/[&<>"'/]/g, (key) => entityMap[key])
   }
 
+  // render the markdown
   var content = message.content;
   content = content.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/,"");
   content = escapeHtml(content);
 
-  return DOMPurify.sanitize(marked.parse(content, {gfm: true, breaks: true}))
+  elem.innerHTML = DOMPurify.sanitize(marked.parse(content, {gfm: true, breaks: true}))
 
+  renderMathInElement(
+    elem,
+    {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "\\[", right: "\\]", display: true},
+        {left: "$", right: "$", display: false},
+        {left: "\\(", right: "\\)", display: false}
+      ],
+
+      throwOnError: false
+    }
+  );
 }
