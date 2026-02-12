@@ -42,3 +42,11 @@ DISCORD_CLIENT_ID = <client ID>
 DISCORD_CLIENT_SECRET = <client Secret>
 DISCORD_REDIRECT_URI = <redirect URI you entered into Discord>
 ```
+
+## Running
+
+### Nix/NixOS
+```
+nix run .#reservoir
+```
+(Currently, this only runs the Redis instance. Eventually, it will run everything else too.)
