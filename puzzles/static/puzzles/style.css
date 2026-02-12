@@ -37,6 +37,7 @@ input, select, button, textarea, code {
 code {
   border: 1px dotted var(--text);
   background-color: var(--crust);
+  display: inline-block;
 }
 
 
