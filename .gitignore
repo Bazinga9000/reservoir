@@ -20,3 +20,6 @@ media
 # Env vars and credentials
 .env
 secrets/
+
+# Redis
+data
