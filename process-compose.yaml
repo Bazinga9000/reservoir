@@ -1,0 +1,25 @@
+disable_env_expansion: true
+processes:
+  redis:
+    availability:
+      max_restarts: 5
+      restart: on_failure
+    command: redis-server --dir data --port 6379
+    log_configuration: {}
+    readiness_probe:
+      exec:
+        command: redis-cli -p 6379 ping
+      failure_threshold: 5
+      initial_delay_seconds: 2
+      period_seconds: 10
+      success_threshold: 1
+      timeout_seconds: 4
+
+  webserver:
+    availability:
+        max_restarts: 5
+        restart: on_failure
+    command: uv run manage.py runserver
+    depends_on:
+      redis:
+        condition: process_started

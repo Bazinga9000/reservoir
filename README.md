@@ -45,10 +45,9 @@ DISCORD_CLIENT_SECRET = <client Secret>
 DISCORD_REDIRECT_URI = <redirect URI you entered into Discord>
 ```
 
-## Running
+## Development
 
-### Nix/NixOS
-```
-nix run .#reservoir
-```
-(Currently, this only runs the Redis instance. Eventually, it will run everything else too.)
+For easy development, you can use `process-compose`:
+
+1. Install `uv`, `redis`, and `process-compose`. (If you're using Nix/NixOS, just `nix develop` and pull them from the provided flake)
+2. Run `process-compose` in this directory.
