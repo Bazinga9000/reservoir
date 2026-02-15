@@ -30,7 +30,15 @@ function initChat(puzzleId) {
       <span class="chat-msg-user"></span> <span class="chat-msg-date"></span><br />
       <span class="chat-msg-content"></span>
     `;
-    elem.querySelector(".chat-msg-user").textContent = message.username;
+
+    var display_user;
+    if (message.is_system) {
+      display_user = "[System]"; 
+    } else {
+      display_user = message.username;
+    }
+
+    elem.querySelector(".chat-msg-user").textContent = display_user;
     elem.querySelector(".chat-msg-user").style.color = "var(--" + message.chat_color + ")"
     elem.querySelector(".chat-msg-date").textContent =
       dateFormatter.format(sentDate);

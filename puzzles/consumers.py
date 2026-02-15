@@ -5,7 +5,7 @@ from django.db.models import F
 from django.core.serializers.json import DjangoJSONEncoder
 
 from .models import Puzzle, ChatMessage
-
+from .commands import parse_command
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -67,6 +67,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     'id',
                     'sent_date',
                     'content',
+                    'is_system',
                     username=F('user__discorduser__cached_username'),
                     chat_color=F('user__discorduser__chat_color')
                 )
@@ -96,7 +97,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 'username': self.username,
                 'sent_date': msg_obj.sent_date,
                 'content': chat_msg_content,
-                'chat_color': self.chat_color
+                'chat_color': self.chat_color,
+                'is_system': False
             }
             message_json = json.dumps(
                 {'type': 'message', 'message': message},
@@ -107,6 +109,26 @@ class ChatConsumer(AsyncWebsocketConsumer):
             await self.channel_layer.group_send(
                 self.room_group_name, {'type': 'chat.message', 'json': message_json}
             )
+
+            # Process the message for command invocation
+            command_output = await parse_command(msg_obj)
+            if command_output is not None:
+                cmd_out_json = json.dumps(
+                    {'type': 'message', 'message': {
+                        'id': command_output.id,
+                        'username': None,
+                        'sent_date': command_output.sent_date,
+                        'content': command_output.content,
+                        'chat_color': "text",
+                        'is_system': True
+                    }},
+                    cls=DjangoJSONEncoder
+                )
+
+                # Send it off
+                await self.channel_layer.group_send(
+                    self.room_group_name, {'type': 'chat.message', 'json': cmd_out_json}
+                )
 
     # Receive a chat.message message from room group
     async def chat_message(self, event):

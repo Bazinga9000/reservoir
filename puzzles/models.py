@@ -216,6 +216,16 @@ class ChatMessage(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     sent_date = models.DateTimeField(auto_now_add=True)
     content = models.TextField()
+    is_system = models.BooleanField(default=False)
+
+    class Meta:
+        constraints = [
+            # is_system true => user null
+            models.CheckConstraint(
+                condition = models.Q(is_system=False) | models.Q(user__isnull=True),
+                name = "system_messages_have_null_user"),
+        ]
+
 
     def __str__(self):
         return self.content
