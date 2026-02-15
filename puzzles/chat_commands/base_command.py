@@ -16,4 +16,4 @@ class BaseChatCommand:
 
         Return a string for the output of the command, or throw an error
         '''
-        raise NotImplementedError(f"Command /{self.name}")
+        raise NotImplementedError(f"Command /{self.name} does not have an implemented `execute` method.")
