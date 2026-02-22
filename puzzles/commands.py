@@ -48,7 +48,7 @@ async def parse_command(chat_message):
         if args == "":
             return await make_message("\n".join(
                 ["/help: List all commands", "/help <command>: Get help for a specific command."] 
-                + [i.help_description for i in REGISTERED_COMMANDS])
+                + [i.help_with_aliases() for i in REGISTERED_COMMANDS])
             )
         else:
             c = fetch_command_of_name(args)
