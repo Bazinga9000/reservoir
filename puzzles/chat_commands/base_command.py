@@ -19,7 +19,7 @@ class BaseChatCommand:
         raise NotImplementedError(f"Command /{self.name} does not have an implemented `execute` method.")
     
     def help_with_aliases(self):
-        if self.alises == []:
+        if self.aliases == []:
             return self.help_description
         else:
             alias_strings = "\n".join([f"/{a}: Alias for /{self.name}" for a in self.aliases])
