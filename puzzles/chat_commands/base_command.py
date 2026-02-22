@@ -2,9 +2,10 @@
 
 
 class BaseChatCommand:
-    def __init__(self, name, help_description):
+    def __init__(self, name, help_description, aliases=[]):
         self.name = name
         self.help_description = help_description
+        self.aliases = aliases
 
     async def execute(self, puzzle, argument):
         '''
@@ -16,3 +17,10 @@ class BaseChatCommand:
         Return a string for the output of the command, or throw an error
         '''
         raise NotImplementedError(f"Command /{self.name} does not have an implemented `execute` method.")
+    
+    def help_with_aliases(self):
+        if self.alises == []:
+            return self.help_description
+        else:
+            alias_strings = "\n".join([f"/{a}: Alias for /{self.name}" for a in self.aliases])
+            return f"{self.help_description}\n{alias_strings}"

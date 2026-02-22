@@ -11,6 +11,8 @@ def fetch_command_of_name(name):
     for c in REGISTERED_COMMANDS:
         if c.name == name:
             return c
+        if name in c.aliases:
+            return c
     return None
 
 # Returns another message to send, or None if none 
