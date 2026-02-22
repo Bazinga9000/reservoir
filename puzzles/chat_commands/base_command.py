@@ -6,7 +6,6 @@ class BaseChatCommand:
         self.name = name
         self.help_description = help_description
 
-    # TODO: this should probably be async
     async def execute(self, puzzle, argument):
         '''
         Do the work required to execute a command. Always accepts the following two arguments:
