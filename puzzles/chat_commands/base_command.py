@@ -47,25 +47,36 @@ def tablify(matrix, alignments=None):
     return "\n".join("|" + "|".join(row) + "|" for row in matrix)
 
 class BaseChatCommand:
-    def __init__(self, name, help_description, aliases=[]):
+    def __init__(self, name, arg_parser, aliases=[]):
         self.name = name
-        self.help_description = help_description
+        self.arg_parser = arg_parser
         self.aliases = aliases
 
-    async def execute(self, puzzle, argument):
+        assert self.arg_parser.add_help == False
+        assert self.arg_parser.exit_on_error == False
+
+    async def execute(self, puzzle, args):
         '''
         Do the work required to execute a command. Always accepts the following two arguments:
 
         puzzle - The puzzle in whose chat this command is being run.
-        argument - Everything after the command name, as a string. Complex argument parsing must be done by the command class.
+        args - The result of parsing the command's arguments with argparse.
 
         Return a string for the output of the command, or throw an error
         '''
         raise NotImplementedError(f"Command /{self.name} does not have an implemented `execute` method.")
     
+    @property
+    def short_help(self):
+        return f"/{self.name}: {self.arg_parser.description}"
+
+    @property
+    def long_help(self):
+        return self.arg_parser.format_help()
+
     def help_with_aliases(self):
         if self.aliases == []:
-            return self.help_description
+            return self.short_help
         else:
             alias_strings = "\n".join([f"/{a}: Alias for /{self.name}" for a in self.aliases])
-            return f"{self.help_description}\n{alias_strings}"
+            return f"{self.short_help}\n{alias_strings}"

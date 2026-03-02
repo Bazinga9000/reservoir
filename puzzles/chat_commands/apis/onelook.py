@@ -1,34 +1,32 @@
 from ..base_command import BaseChatCommand, fetch, tablify
-import shlex
 import urllib
 import json
+import argparse
+
+onelook_parser = argparse.ArgumentParser(
+    prog = "/onelook",
+    description = "Query [onelook](https://www.onelook.com/) to find words.",
+    add_help = False,
+    exit_on_error = False,
+)
+onelook_parser.add_argument("query", nargs="+", help="The query to search.")
+onelook_parser.add_argument("-n", "--count", type=int, default=10, help="The maximum number of results to return.")
+
 
 ONELOOK_URL = "https://api.datamuse.com/words?{params}"
 
 class OneLookCommand(BaseChatCommand):
     def __init__(self):
-        super().__init__("onelook", "/onelook <query> <optional n>: Query onelook for the top `n` words matching `query`.", [
+        super().__init__("onelook", onelook_parser, [
             "ol"
         ])
 
     async def execute(self, puzzle, args):
-        args = shlex.split(args)
-
-        if len(args) == 1:
-            args.append("10") # Default n
-
-        if len(args) != 2:
-            raise TypeError("/onelook must take one or two arguments.")
-        
-        query = args[0]
-        try:
-            top_n = int(args[1])
-        except: 
-            raise ValueError("Invalid argument: n must be an integer.")
-        
-        if top_n < 1:
+        if args.count < 1:
             raise ValueError("Invalid argument: n must be positive.") 
 
+        query = " ".join(args.query)
+        top_n = args.count
 
         defn = None
         if ':' in query:

@@ -38,26 +38,28 @@ async def parse_command(chat_message):
     content = content[1:]
 
     # Split command name from args
-    content = content.split(" ", 1)
-    if len(content) == 1:
-        content.append("")
+    content = content.split(" ")
     
-    command, args = content
+    if len(content) == 0:
+        content.append("")
+
+    command = content[0]
+    args = content[1:]
 
     # Special case for help to access the various help messages
     if command == "help":
-        if args == "":
+        if args == []:
             return await make_message("\n".join(
                 ["/help: List all commands", "/help <command>: Get help for a specific command."] 
                 + [i.help_with_aliases() for i in REGISTERED_COMMANDS])
             )
         else:
-            c = fetch_command_of_name(args)
+            c = fetch_command_of_name(args[0])
 
             if c is None:
                 return await make_message(f"Error: no command /{command}. Use /help to list commands.")
             else:
-                return await make_message(c.help_description)
+                return await make_message(c.long_help)
 
     else:
         c = fetch_command_of_name(command)
@@ -66,7 +68,7 @@ async def parse_command(chat_message):
             return await make_message(f"Error: no command /{command}. Use /help to list commands.")
         else:
             try:
-                out = await c.execute(chat_message.puzzle, args)
+                out = await c.execute(chat_message.puzzle, c.arg_parser.parse_args(args=args))
                 return await make_message(out)
             except Exception as e:
                 return await make_message(f"Error: {e}")
