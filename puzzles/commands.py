@@ -5,7 +5,8 @@ from .chat_commands import *
 REGISTERED_COMMANDS = [
     PingCommand(),
     SolveCommand(),
-    OneLookCommand()
+    OneLookCommand(),
+    HDASCommand()
 ]
 
 def fetch_command_of_name(name):
