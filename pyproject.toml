@@ -12,6 +12,8 @@ dependencies = [
     "dotenv>=0.9.9",
     "gspread>=6.2.1",
     "requests>=2.32.5",
+    "shunting-yard>=1.0.12.post1",
+    "sympy>=1.14.0",
 ]
 
 [dependency-groups]

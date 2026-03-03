@@ -6,7 +6,9 @@ REGISTERED_COMMANDS = [
     PingCommand(),
     SolveCommand(),
     OneLookCommand(),
-    HDASCommand()
+    HDASCommand(),
+    CalcCommand(),
+    CalcECommand()
 ]
 
 def fetch_command_of_name(name):
