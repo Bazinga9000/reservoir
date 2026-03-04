@@ -59,3 +59,25 @@
 .chat-msg-content {
   overflow: auto;
 }
+
+.chat-msg-content p {
+  margin: 8px auto;
+}
+
+/* scrollbar styling */
+@supports (scrollbar-color: auto) {
+  #chat-log {
+    scrollbar-color: var(--overlay1) transparent;
+  }
+}
+
+@supports selector(::-webkit-scrollbar) {
+  #chat-log::-webkit-scrollbar {
+    background: transparent;
+  }
+  #chat-log::-webkit-scrollbar-thumb {
+    background: var(--overlay1);
+  }
+}
+
+
