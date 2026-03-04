@@ -12,6 +12,13 @@
   flex: 1 1 200px;
   display: flex;
   flex-direction: column;
+  /*
+    for flex items, the default min-width value of auto means that the
+    content (e.g. long words in latex) can affect the width of the sidebar.
+    set it to 0 to prevent this behavior
+    https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/min-width#auto
+  */
+  min-width: 0;
 }
 
 #chat-log {
@@ -47,4 +54,8 @@
 .chat-msg-date {
   font-size: 75%;
   color: var(--overlay1);
+}
+
+.chat-msg-content {
+  overflow: auto;
 }

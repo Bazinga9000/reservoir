@@ -27,8 +27,10 @@ function initChat(puzzleId) {
     const elem = document.createElement("div");
     elem.className = "chat-msg";
     elem.innerHTML = `
-      <span class="chat-msg-user"></span> <span class="chat-msg-date"></span><br />
-      <span class="chat-msg-content"></span>
+      <div class="chat-msg-header">
+        <span class="chat-msg-user"></span> <span class="chat-msg-date"></span>
+      </div>
+      <div class="chat-msg-content"></div>
     `;
 
     var display_user;
