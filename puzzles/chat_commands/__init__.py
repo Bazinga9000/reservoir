@@ -2,4 +2,5 @@ from .ping import PingCommand
 from .solve import SolveCommand
 from .apis.onelook import OneLookCommand
 from .apis.hdas import HDASCommand
+from .apis.sajak import SajakCommand
 from .calc.command import CalcCommand, CalcECommand

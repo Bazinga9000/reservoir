@@ -15,6 +15,12 @@ processes:
       success_threshold: 1
       timeout_seconds: 4
 
+  sajak:
+    availability:
+      max_restarts: 5
+      restart: on_failure
+    command: sajak_http
+
   webserver:
     availability:
         max_restarts: 5
@@ -22,4 +28,6 @@ processes:
     command: uv run manage.py runserver
     depends_on:
       redis:
+        condition: process_started
+      sajak:
         condition: process_started

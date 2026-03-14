@@ -49,5 +49,5 @@ DISCORD_REDIRECT_URI = <redirect URI you entered into Discord>
 
 For easy development, you can use `process-compose`:
 
-1. Install `uv`, `redis`, and `process-compose`. (If you're using Nix/NixOS, just `nix develop` and pull them from the provided flake)
+1. Install `uv`, `redis`, `process-compose`, and [`sajak_http`](https://github.com/Bazinga9000/sajak). (If you're using Nix/NixOS, just `nix develop` and pull them from the provided flake)
 2. Run `process-compose` in this directory.

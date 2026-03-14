@@ -4,6 +4,11 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
     systems.url = "github:nix-systems/default";
+
+    sajak = {
+      url = "github:Bazinga9000/sajak";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs =
     inputs:
@@ -12,6 +17,7 @@
       perSystem =
         {
           self',
+          inputs',
           pkgs,
           config,
           lib,
@@ -23,6 +29,7 @@
               uv
               redis
               process-compose
+              inputs'.sajak.packages.sajak
             ];
           };
         };

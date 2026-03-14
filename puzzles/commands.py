@@ -7,6 +7,7 @@ REGISTERED_COMMANDS = [
     SolveCommand(),
     OneLookCommand(),
     HDASCommand(),
+    SajakCommand(),
     CalcCommand(),
     CalcECommand()
 ]
