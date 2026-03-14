@@ -1,11 +1,11 @@
 import aiohttp
 
-async def fetch(url):
+async def fetch(url, **kwargs):
     '''
     Utility method so that any commands can perform an asynchronous HTTP request
     '''
     async with aiohttp.ClientSession() as session:
-            async with session.get(url) as response:
+            async with session.get(url, **kwargs) as response:
                 return await response.content.read()
 
 def tablify(matrix, alignments=None):
@@ -31,8 +31,6 @@ def tablify(matrix, alignments=None):
         alignments = [2 for _ in range(max_len)]
 
     alignments = [[":---:","---:","---",":---"][i] for i in alignments]
-
-    print(matrix)
 
     matrix.insert(1, alignments)
 
