@@ -29,7 +29,7 @@
               uv
               redis
               process-compose
-              inputs'.sajak.packages.sajak
+              inputs'.sajak.packages.default
             ];
           };
         };
