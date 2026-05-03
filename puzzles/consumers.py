@@ -1,3 +1,4 @@
+import asyncio
 import json
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
@@ -110,25 +111,31 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 self.room_group_name, {'type': 'chat.message', 'json': message_json}
             )
 
-            # Process the message for command invocation
-            command_output = await parse_command(msg_obj)
-            if command_output is not None:
-                cmd_out_json = json.dumps(
-                    {'type': 'message', 'message': {
-                        'id': command_output.id,
-                        'username': None,
-                        'sent_date': command_output.sent_date,
-                        'content': command_output.content,
-                        'chat_color': "text",
-                        'is_system': True
-                    }},
-                    cls=DjangoJSONEncoder
-                )
+            # Abstract the command parse/send into an async function so we
+            # can then make it into its own task
+            # and messages can keep flowing
+            async def run_and_broadcast_command(msg_obj):
+                try:
+                    command_output = await parse_command(msg_obj)
+                    if command_output is not None:
+                        cmd_out_json = json.dumps(
+                            {'type': 'message', 'message': {
+                                'id': command_output.id,
+                                'username': None,
+                                'sent_date': command_output.sent_date,
+                                'content': command_output.content,
+                                'chat_color': "text",
+                                'is_system': True
+                            }},
+                            cls=DjangoJSONEncoder
+                        )
+                        await self.channel_layer.group_send(
+                            self.room_group_name, {'type': 'chat.message', 'json': cmd_out_json}
+                        )
+                except Exception as e:
+                    print(f"Error processing command: {e}")
 
-                # Send it off
-                await self.channel_layer.group_send(
-                    self.room_group_name, {'type': 'chat.message', 'json': cmd_out_json}
-                )
+            asyncio.create_task(run_and_broadcast_command(msg_obj))
 
     # Receive a chat.message message from room group
     async def chat_message(self, event):
