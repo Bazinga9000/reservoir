@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from . import google
+import secrets
+import functools
 
 class Theme(models.TextChoices):
     LATTE = "latte", "Latte"
@@ -95,8 +97,11 @@ class Hunt(models.Model):
         puzzle_max = 10
         puzzles = self.puzzle_set.filter(~models.Q(status__exact=PuzzleStatus.SOLVED)).all()[:puzzle_max]
         return sorted(puzzles, key=(lambda p: (-p.priority(), p.name)))
-        
 
+class AuthLink(models.Model):
+    string = models.CharField(max_length=32, primary_key=True, default=functools.partial(secrets.token_hex, 16))
+    hunt = models.ForeignKey(Hunt, on_delete=models.CASCADE)
+    
 class Round(models.Model):
     name = models.CharField(max_length=255)
     hunt = models.ForeignKey(Hunt, on_delete=models.CASCADE)
