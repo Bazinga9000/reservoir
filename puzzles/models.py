@@ -65,6 +65,7 @@ class PuzzleStatus(models.TextChoices):
 
 class Hunt(models.Model):
     name = models.CharField(max_length=255)
+    users = models.ManyToManyField(User, through="HuntMember")
 
     team_user = models.CharField(max_length=64)
     team_pw = models.CharField(max_length=64)
@@ -97,6 +98,17 @@ class Hunt(models.Model):
         puzzle_max = 10
         puzzles = self.puzzle_set.filter(~models.Q(status__exact=PuzzleStatus.SOLVED)).all()[:puzzle_max]
         return sorted(puzzles, key=(lambda p: (-p.priority(), p.name)))
+
+class HuntMember(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    hunt = models.ForeignKey(Hunt, on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["user", "hunt"], name="user_to_hunt"
+            )
+        ]
 
 class AuthLink(models.Model):
     string = models.CharField(max_length=32, primary_key=True, default=functools.partial(secrets.token_hex, 16))
@@ -197,7 +209,7 @@ class Puzzle(models.Model):
 
 class PuzzleRoundField(models.Model):
     puzzle = models.ForeignKey(Puzzle, on_delete=models.CASCADE)
-    hunt_round  = models.ForeignKey(Round, on_delete=models.CASCADE)
+    hunt_round = models.ForeignKey(Round, on_delete=models.CASCADE)
     
     class Meta:
         constraints = [
