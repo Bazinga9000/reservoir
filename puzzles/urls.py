@@ -15,6 +15,7 @@ urlpatterns = [
     path("login/", views.login_view, name="login"),
     path("logout/", views.logout_view, name="logout"),
     path("auth/", views.auth, name="auth"),
+    path("link/<str:authlink>", views.authlink, name="link"),
     path("userpage/", views.user_page, name="userpage"),
     path("userpage/update", views.update_discord_user, name="update_discord_user")
 ]

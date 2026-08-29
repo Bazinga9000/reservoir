@@ -6,7 +6,8 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth import authenticate, logout, login
 
 
-from .models import Hunt, Round, Puzzle, PuzzleStatus, Answer
+from .models import Hunt, Round, Puzzle, PuzzleStatus, Answer, AuthLink, HuntMember
+from .decorators import user_can_see_hunt, user_can_see_puzzle
 from .forms import NewPuzzleForm, UpdatePuzzleForm, UpdateDiscordUserForm
 from os import getenv
 from urllib.parse import quote
@@ -62,7 +63,7 @@ def update_discord_user(request):
     return HttpResponseRedirect(reverse("puzzles:userpage"))
 
 
-@login_required()
+@user_can_see_hunt
 def bigboard(request, hunt_id):
     hunt = get_object_or_404(Hunt, pk=hunt_id)
 
@@ -71,7 +72,7 @@ def bigboard(request, hunt_id):
         "new_puzzle_form": NewPuzzleForm(hunt)
     })
 
-@login_required()
+@user_can_see_puzzle
 def puzzlepage(request, puzzle_id):
     puzzle = get_object_or_404(Puzzle, pk=puzzle_id)
     return render(request, "puzzles/puzzlepage.html", {
@@ -79,6 +80,7 @@ def puzzlepage(request, puzzle_id):
         "update_puzzle_form": UpdatePuzzleForm(puzzle)
     })
 
+@user_can_see_puzzle
 def update(request, puzzle_id):
     puzzle = get_object_or_404(Puzzle, pk=puzzle_id)
     
@@ -94,7 +96,7 @@ def update(request, puzzle_id):
 
     return HttpResponseRedirect(reverse("puzzles:puzzlepage", args=(puzzle.id,)))
 
-
+@user_can_see_hunt
 def new_round(request, hunt_id):
     hunt = get_object_or_404(Hunt, pk=hunt_id)
 
@@ -107,7 +109,7 @@ def new_round(request, hunt_id):
 
     return HttpResponseRedirect(reverse("puzzles:bigboard", args=(hunt.id,)))
 
-
+@user_can_see_hunt
 def new_puzzle(request, hunt_id):
     hunt = get_object_or_404(Hunt, pk=hunt_id)
     hunt_round = get_object_or_404(Round, pk=1)
@@ -125,6 +127,12 @@ def new_puzzle(request, hunt_id):
 
 def landing(request):
     return render(request, "puzzles/landing.html", {
-        "hunts": Hunt.objects.all(),
+        "hunts": request.user.hunt_set.all() if request.user.is_authenticated else [],
         "team_name": getenv("TEAM_NAME")
     })
+
+@login_required()
+def authlink(request, authlink):
+    link = get_object_or_404(AuthLink, string=authlink)
+    membership = HuntMember.objects.get_or_create(user=request.user, hunt=link.hunt)
+    return HttpResponseRedirect(reverse("puzzles:bigboard", args=(link.hunt.id, )))
