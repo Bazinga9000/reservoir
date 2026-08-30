@@ -6,12 +6,12 @@ from dotenv import load_dotenv
 import os
 from .models import DiscordUser
 
-load_dotenv()
+load_dotenv(os.getenv("RESERVOIR_DOTENV", ".env"))
 
 DISCORD_CLIENT_ID = os.getenv("DISCORD_CLIENT_ID")
 DISCORD_CLIENT_SECRET = os.getenv("DISCORD_CLIENT_SECRET")
 DISCORD_REDIRECT_URI = os.getenv("DISCORD_REDIRECT_URI")
-    
+
 class DiscordAuthBackend(BaseBackend):
     def get_user(self, user_id):
         try:
@@ -57,4 +57,3 @@ class DiscordAuthBackend(BaseBackend):
             discord_user, _ = DiscordUser.objects.get_or_create(user=user, defaults={"cached_username": username})
             discord_user.save()
             return user
-            

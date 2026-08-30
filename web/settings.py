@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,6 +33,8 @@ ALLOWED_HOSTS = []
 
 AUTHENTICATION_BACKENDS = ["puzzles.backend.DiscordAuthBackend", "django.contrib.auth.backends.ModelBackend"]
 
+USE_WHITENOISE = os.environ.get('RESERVOIR_WHITENOISE') == '1'
+
 INSTALLED_APPS = [
     'daphne',  # keep at beginning
     'puzzles.apps.PuzzlesConfig',
@@ -45,6 +48,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    *(['whitenoise.middleware.WhiteNoiseMiddleware'] if USE_WHITENOISE else []),
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -52,6 +56,16 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+if USE_WHITENOISE:
+    STORAGES = {
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+    }
 
 ROOT_URLCONF = 'web.urls'
 
@@ -79,7 +93,7 @@ WSGI_APPLICATION = 'web.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.environ.get('RESERVOIR_DB_PATH', BASE_DIR / 'db.sqlite3'),
     }
 }
 
@@ -120,6 +134,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]  # new
+STATIC_ROOT = os.environ.get('RESERVOIR_STATIC_ROOT', BASE_DIR / 'staticfiles')
 
 LOGIN_URL = "/login"
 

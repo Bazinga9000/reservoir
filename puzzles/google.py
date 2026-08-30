@@ -2,15 +2,19 @@ import gspread
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
+load_dotenv(os.getenv("RESERVOIR_DOTENV", ".env"))
 TEMPLATE_ID = os.getenv("SHEETS_TEMPLATE_ID")
 FOLDER_ID = os.getenv("SHEETS_FOLDER_ID")
 TEAM_NAME = os.getenv("TEAM_NAME")
 
 def get_client():
     return gspread.oauth(
-        credentials_filename='secrets/google_oauth.json',
-        authorized_user_filename='secrets/google_authorized_user.json'
+        credentials_filename=os.getenv(
+            "GOOGLE_OAUTH_CREDENTIALS", "secrets/google_oauth.json"
+        ),
+        authorized_user_filename=os.getenv(
+            "GOOGLE_AUTHORIZED_USER", "secrets/google_authorized_user.json"
+        ),
     )
 
 

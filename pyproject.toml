@@ -1,7 +1,7 @@
 [project]
 name = "reservoir"
 version = "0.1.0"
-description = "Add your description here"
+description = "A puzzlehunt management webapp used by ℙoNDeterministic."
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
@@ -14,6 +14,7 @@ dependencies = [
     "requests>=2.32.5",
     "shunting-yard>=1.0.12.post1",
     "sympy>=1.14.0",
+    "whitenoise>=6.11.0",
 ]
 
 [dependency-groups]
@@ -23,3 +24,12 @@ dev = [
 prod = [
     "gunicorn>=24.1.1",
 ]
+
+# stop uv from trying to build/install this, as it isn't a package
+[tool.uv]
+package = false
+
+# uv doesn't lock build systems; these are needed by uv2nix to build the sdist-only packages below from source.
+[tool.uv.extra-build-dependencies]
+py-ubjson = ["setuptools"]
+shunting-yard = ["setuptools"]
