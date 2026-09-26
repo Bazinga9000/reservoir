@@ -30,13 +30,24 @@
   };
   outputs =
     inputs:
-    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = import inputs.systems;
-      flake.nixosModules.default = import ./nix/module.nix {
-        app = inputs.self.packages.${inputs.systems}.reservoir;
-        sajakModule = inputs.sajak.nixosModules.default;
-      };
-      perSystem =
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } (
+      { moduleWithSystem, ... }:
+      {
+        systems = import inputs.systems;
+
+        flake.nixosModules.default = moduleWithSystem (
+          perSystem@{ self', ... }:
+          nixos@{ lib, ... }:
+          {
+            services.reservoir.package = lib.mkDefault self'.packages.reservoir;
+            imports = [
+              inputs.sajak.nixosModules.default
+              ./nix/module.nix
+            ];
+          }
+        );
+
+        perSystem =
         {
           self',
           inputs',
@@ -98,5 +109,6 @@
             ];
           };
         };
-    };
+    }
+  );
 }

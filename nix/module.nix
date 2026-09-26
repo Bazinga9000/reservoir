@@ -1,8 +1,4 @@
 {
-  app,
-  sajakModule,
-}:
-{
   config,
   lib,
   pkgs,
@@ -22,7 +18,6 @@ in
 
     package = lib.mkOption {
       type = lib.types.package;
-      default = app;
       description = "The reservoir package to use.";
     };
 
