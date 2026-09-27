@@ -164,11 +164,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1790408578,
-        "narHash": "sha256-hSQbuQYpfeFWTW8+ug3TaUzJzEctMlauQ7HcNNUDCVU=",
+        "lastModified": 1790496606,
+        "narHash": "sha256-aMyTDHlZGRC+7tsPIpYwMiyApWUfSgikeyPfTGXwpTE=",
         "owner": "Bazinga9000",
         "repo": "sajak",
-        "rev": "34180c34293e39ac10f77fb2e06501730f2d50ad",
+        "rev": "3e26e62ea79fae5e9f7ea1d0c79e3b80ae0e34db",
         "type": "github"
       },
       "original": {
