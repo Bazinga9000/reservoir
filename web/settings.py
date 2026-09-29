@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 from pathlib import Path
 import os
 
+load_dotenv(os.getenv("RESERVOIR_DOTENV", ".env"))
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,19 +23,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DJANGO_DEBUG", False)
+DEBUG = os.getenv("DJANGO_DEBUG", False)
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-t4@%a)+0f1976y27^80s5pxnk$rd#9aa-w1+=9(_i-1-2(gpkv' if DEBUG else os.environ.get('DJANGO_SECRET_KEY')
+SECRET_KEY = 'django-insecure-t4@%a)+0f1976y27^80s5pxnk$rd#9aa-w1+=9(_i-1-2(gpkv' if DEBUG else os.getenv('DJANGO_SECRET_KEY')
 
-ALLOWED_HOSTS = [os.environ.get("RESERVOIR_HOSTNAME", "localhost:8080")]
+ALLOWED_HOSTS = [os.getenv("RESERVOIR_HOSTNAME", "localhost:8080")]
 
 
 # Application definition
 
 AUTHENTICATION_BACKENDS = ["puzzles.backend.DiscordAuthBackend", "django.contrib.auth.backends.ModelBackend"]
 
-USE_WHITENOISE = os.environ.get('RESERVOIR_WHITENOISE') == '1'
+USE_WHITENOISE = os.getenv('RESERVOIR_WHITENOISE') == '1'
 
 INSTALLED_APPS = [
     'daphne',  # keep at beginning
