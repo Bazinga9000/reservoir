@@ -2,7 +2,13 @@
 
 A puzzlehunt management webapp used by ℙoNDeterministic.
 
-## External Setup
+
+## Setup
+
+### Django
+
+1. Create a secret key by calling `django.core.management.utils.get_random_secret_key`. Store it as `DJANGO_SECRET_KEY`.
+2. Set the hostname of the site, **without** a protocol string (e.g. `https://`) or trailing slash. Store it as `RESERVOIR_HOSTNAME`.
 
 ### Google Integration (For per-puzzle Google Sheets)
 
@@ -34,7 +40,7 @@ This site relies on Discord as an authentication provider. You will need to set 
    - the Client ID
    - the Client Secret. Note that clicking Reset Secret to view the secret will nullify any in-use secrets.
 2. Determine the Redirect URL. 
-   - This is usually where you will be hosting your server, with `/auth` appended. For debugging purposes this can be something like `http://localhost:8080/auth`.
+   - This is `http://RESERVOIR_HOSTNAME/auth`, where `RESERVOIR_HOSTNAME` is the hostname you chose during the Django setup section
 3. Configure this URL as a valid Redirect URI for Discord OAuth.
 
 At the end of this section you should have the following values:
@@ -49,7 +55,7 @@ For easy development, you can use `process-compose`:
 1. Install `uv`, `redis`, `process-compose`, and [`sajak_http`](https://github.com/Bazinga9000/sajak). (If you're using Nix/NixOS, just `nix develop` and pull them from the provided flake)
 2. Provide the secrets and values from the external services setup:
    - Put `google_oauth.json` and `google_authorized_user.json` under `secrets/` in this repo's directory.
-   - Create a `.env` file in this repo's directory with all the variables (`TEAM_NAME`, `SHEETS_TEMPLATE_ID`, `SHEETS_FOLDER_ID`, `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET`, `DISCORD_REDIRECT_URI`).
+   - Create a `.env` file in this repo's directory with all the variables (`TEAM_NAME`, `SHEETS_TEMPLATE_ID`, `SHEETS_FOLDER_ID`, `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET`, `RESERVOIR_HOSTNAME`).
 3. Run `process-compose` in this directory.
 
 ## Deployment (NixOS)
@@ -67,7 +73,7 @@ don't care, but note these will be world-readable in the Nix store). Three files
 
 1. A dotenv file containing all the variables from the external services
    setup (`TEAM_NAME`, `SHEETS_TEMPLATE_ID`, `SHEETS_FOLDER_ID`,
-   `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET`, `DISCORD_REDIRECT_URI`).
+   `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET`, `DJANGO_SECRET_KEY`, `RESERVOIR_HOSTNAME`).
 2. The Google OAuth client credentials (`google_oauth.json`).
 3. The Google authorized user token (`google_authorized_user.json`)
 
