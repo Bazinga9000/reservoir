@@ -13,7 +13,8 @@ from os import getenv
 from urllib.parse import quote
 
 DISCORD_CLIENT_ID = getenv("DISCORD_CLIENT_ID")
-DISCORD_REDIRECT_URI = getenv("DISCORD_REDIRECT_URI")
+RESERVOIR_HOSTNAME = getenv("RESERVOIR_HOSTNAME")
+DISCORD_REDIRECT_URL = f"https://{RESERVOIR_HOSTNAME}/auth"
 
 from uuid import uuid4
 
@@ -21,7 +22,7 @@ def login_view(request):
     state = uuid4().hex
     request.session["state"] = state
     # request.session["next"] = request.GET.get("next")
-    return HttpResponseRedirect(f"https://discord.com/oauth2/authorize?client_id={DISCORD_CLIENT_ID}&response_type=code&redirect_uri={quote(DISCORD_REDIRECT_URI)}&scope=identify&state={state}")
+    return HttpResponseRedirect(f"https://discord.com/oauth2/authorize?client_id={DISCORD_CLIENT_ID}&response_type=code&redirect_uri={quote(DISCORD_REDIRECT_URL)}&scope=identify&state={state}")
 
 def auth(request):
     if "code" not in request.GET \
