@@ -30,7 +30,9 @@ DEBUG = os.getenv("DJANGO_DEBUG", False)
 SECRET_KEY = 'django-insecure-t4@%a)+0f1976y27^80s5pxnk$rd#9aa-w1+=9(_i-1-2(gpkv' if DEBUG else os.getenv('DJANGO_SECRET_KEY')
 
 ALLOWED_HOSTS = [os.getenv("RESERVOIR_HOSTNAME", "localhost:8080")]
-
+CSRF_TRUSTED_ORIGINS = []
+if (hostname := os.getenv("RESERVOIR_HOSTNAME")) is not None:
+    CSRF_TRUSTED_ORIGINS.append(hostname)
 
 # Application definition
 
