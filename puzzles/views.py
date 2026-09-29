@@ -14,7 +14,7 @@ from urllib.parse import quote
 
 DISCORD_CLIENT_ID = getenv("DISCORD_CLIENT_ID")
 RESERVOIR_HOSTNAME = getenv("RESERVOIR_HOSTNAME")
-DISCORD_REDIRECT_URL = f"https://{RESERVOIR_HOSTNAME}/auth"
+DISCORD_REDIRECT_URL = f"http://{RESERVOIR_HOSTNAME}/auth"
 
 from uuid import uuid4
 

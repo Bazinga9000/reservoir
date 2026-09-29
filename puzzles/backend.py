@@ -10,7 +10,8 @@ load_dotenv(os.getenv("RESERVOIR_DOTENV", ".env"))
 
 DISCORD_CLIENT_ID = os.getenv("DISCORD_CLIENT_ID")
 DISCORD_CLIENT_SECRET = os.getenv("DISCORD_CLIENT_SECRET")
-DISCORD_REDIRECT_URI = os.getenv("DISCORD_REDIRECT_URI")
+RESERVOIR_HOSTNAME = getenv("RESERVOIR_HOSTNAME")
+DISCORD_REDIRECT_URL = f"http://{RESERVOIR_HOSTNAME}/auth"
 
 class DiscordAuthBackend(BaseBackend):
     def get_user(self, user_id):
@@ -24,7 +25,7 @@ class DiscordAuthBackend(BaseBackend):
         data = {
             "grant_type": "authorization_code",
             "code": code,
-            "redirect_uri": DISCORD_REDIRECT_URI
+            "redirect_uri": 
         }
         headers = {
             "Content-Type": "application/x-www-form-urlencoded"
