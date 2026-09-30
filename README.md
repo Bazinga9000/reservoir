@@ -46,7 +46,6 @@ This site relies on Discord as an authentication provider. You will need to set 
 At the end of this section you should have the following values:
 - `DISCORD_CLIENT_ID` — the client ID
 - `DISCORD_CLIENT_SECRET` — the client secret
-- `DISCORD_REDIRECT_URI` — the redirect URI you entered into Discord
 
 ## Development
 
