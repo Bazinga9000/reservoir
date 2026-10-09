@@ -8,6 +8,10 @@
   flex: 5 1 0;
 }
 
+.puzzleframe {
+  overscroll-behavior: none;
+}
+
 #chat-sidebar {
   flex: 1 1 200px;
   display: flex;
