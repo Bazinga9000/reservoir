@@ -113,11 +113,7 @@ def new_round(request, hunt_id):
 @user_can_see_hunt
 def new_puzzle(request, hunt_id):
     hunt = get_object_or_404(Hunt, pk=hunt_id)
-    hunt_round = get_object_or_404(Round, pk=1)
-
-    if hunt_round.hunt.id != hunt.id:
-        raise Http404("This round is for a different hunt than the given hunt")
-
+    
     if request.method == "POST":
         form = NewPuzzleForm(hunt, request.POST)
         if form.is_valid():
