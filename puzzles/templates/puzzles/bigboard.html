@@ -21,12 +21,20 @@
 {% block content %}
 <center>
 <h1>{{ hunt.name }}</h1>
+<div class="countboxes">
 <div class="total_count countbox"><div class="icon">{% include 'puzzles/icons/puzzle.svg' %}</div><span class="bigboard_number">{{ hunt.total_puzzles }}</span><br>Total Puzzles</div>
 <div class="locked_count countbox"><div class="icon">{% include 'puzzles/icons/lock.svg' %}</div><span class="bigboard_number">{{ hunt.num_locked }}</span><br>Locked Puzzles</div>
 <div class="solved_count countbox"><div class="icon">{% include 'puzzles/icons/check.svg' %}</div><span class="bigboard_number">{{ hunt.num_solved }}</span><br> Solved Puzzles</div>
 <div class="open_count countbox"><div class="icon">{% include 'puzzles/icons/target.svg' %}</div><span class="bigboard_number">{{ hunt.num_available }}</span><br>Available Puzzles</div>
 <div class="meta_count countbox"><div class="icon">{% include 'puzzles/icons/layers.svg' %}</div><span class="bigboard_number">{{ hunt.meta_solves }}</span><br>Meta Solves</div>
+</div>
 </center>
+
+<form class="add_new_round" autocomplete="off" action="{% url 'puzzles:new_round' hunt.id %}" method="post">
+{% csrf_token %}
+<input class="new_round" name="new_round" placeholder="Add New Round" maxlength="255"></input>
+<button type="submit">Add New Round</button>
+</form>
 
 <div class="round_info wsiwo">
     <center><h2><i>What Should I Work On?</i></h2></center>
@@ -66,14 +74,6 @@
     {% endfor %}
 </div>
 {% endif %}
-
-
-<form autocomplete="off" action="{% url 'puzzles:new_round' hunt.id %}" method="post">
-{% csrf_token %}
-<label for="new_round">Add New Round</label>
-<input class="new_round" name="new_round" maxlength="255"></input>
-<button type="submit">Add New Round</button>
-</form>
 
 <div class="popup_form" id="new_puzzle_form">
         <form autocomplete="off" action="{% url 'puzzles:new_puzzle' hunt.id %}" method="post">
