@@ -1,37 +1,70 @@
+/* =-=-=-=-=-=-= HOUSEKEEPING =-=-=-=-=-=-= */
 @font-face {
-    font-family: "fairfaxhd";
-    src:
-        local("Fairfax HD"),
-        local("Fairfax HD-Regular"),
-        url("./fonts/FairfaxHD.ttf") format("truetype");
+  font-family: "fairfaxhd";
+  src:
+    local("Fairfax HD"),
+    local("Fairfax HD-Regular"),
+    url("./fonts/FairfaxHD.ttf") format("truetype");
+}
+
+:root {
+  --border: solid 2px;
+  --b-radius: 6px;
 }
 
 body {
-    background-color: var(--base);
-    color: var(--text);
-    font-family: "fairfaxhd", sans-serif;
-    font-size: 18px;
-    margin: auto;
+  background-color: var(--base);
+  color: var(--text);
+  font-family: "fairfaxhd", sans-serif;
+  font-size: 18px;
+  margin: auto;
 }
 
 #content {
   margin: auto 8px;
 }
 
-input, select, button, textarea, code {
-  border-style: solid;
-  font-family: "fairfaxhd", sans-serif;
+h1,
+h2,
+h3,
+h4,
+h5 {
+  margin: 0.25em 0;
+}
+
+h1 {
+  font-size: 2.5em;
+}
+
+a {
+  text-decoration: none;
+  color: var(--sapphire);
+}
+
+a:hover {
+  color: var(--blue);
+}
+
+/* TODO i dont know what the fuck half of this is for */
+input,
+select,
+button,
+textarea,
+code {
   background-color: inherit;
   color: inherit;
   border-color: var(--text);
   font-size: inherit;
-
-  border-width: 2px;
-  border-radius: 2px;
-  border-style: solid;
-
+  font-family: inherit;
+  border: var(--border);
+  border-radius: var(--b-radius);
   margin: 2px;
-  padding: 2px;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+input {
+  background-color: var(--mantle);
 }
 
 code {
@@ -40,8 +73,9 @@ code {
   display: inline-block;
 }
 
-
-table, th, td {
+table,
+th,
+td {
   border: 1px solid var(--text);
 }
 
@@ -59,47 +93,98 @@ fieldset {
   border-color: inherit;
 }
 
+/* =-=-=-=-=-=-= NAV =-=-=-=-=-=-= */
+.nav {
+  font-size: 24px;
+  background-color: var(--mantle);
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 2.5px 15px 18px;
+  mask:
+    radial-gradient(33.54px at 50% calc(100% - 45px), #000 99%, #0000 101%)
+      calc(50% - 30px) 0/60px 100%,
+    radial-gradient(33.54px at 50% calc(100% + 30px), #0000 99%, #000 101%) 50%
+      calc(100% - 15px) / 60px 100% repeat-x;
+}
+
+.nav-right {
+  text-align: right;
+}
+
+/* =-=-=-=-=-=-= PUZZLE STATS =-=-=-=-=-=-= */
+.countboxes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
 
 .icon svg {
-  width: 100px;
-  height: 100px;
+  width: 55px;
+  height: 55px;
 }
 
 .bigboard_number {
-    font-size: 40px;
-    font-weight: bold;
+  font-size: 40px;
+  font-weight: bold;
+  padding: 0 5px;
 }
 
 .countbox {
-    border: 5px solid;
-    border-radius: 5px;
-    display: inline-block;
-    padding: 10px;
-    text-align: center;
+  border: var(--border);
+  border-radius: var(--b-radius);
+  background-color: var(--surface0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  flex-direction: row;
+  padding: 5px;
+  text-align: center;
+  width: 100%;
+  max-width: 125px;
 }
 
 .total_count {
-  color: var(--rosewater);
+  --accent-color: var(--rosewater);
+  color: var(--accent-color);
+  border-color: var(--accent-color);
 }
 
 .locked_count {
-  color: var(--red);
+  --accent-color: var(--red);
+  color: var(--accent-color);
+  border-color: var(--accent-color);
 }
 
 .solved_count {
-  color: var(--green);
+  --accent-color: var(--green);
+  color: var(--accent-color);
+  border-color: var(--accent-color);
 }
 
 .open_count {
-  color: var(--yellow);
+  --accent-color: var(--yellow);
+  color: var(--accent-color);
+  border-color: var(--accent-color);
 }
 
 .meta_count {
-  color: var(--lavender);
+  --accent-color: var(--lavender);
+  color: var(--accent-color);
+  border-color: var(--accent-color);
 }
 
-.answer {
-  color: var(--green);
+.total_count:hover,
+.locked_count:hover,
+.solved_count:hover,
+.open_count:hover,
+.meta_count:hover {
+  background-color: var(--accent-color, currentColor);
+  color: var(--base);
+  transition: 0.3s;
 }
 
 .meta_name {
@@ -110,43 +195,52 @@ fieldset {
   margin-right: 5px;
 }
 
+/* =-=-=-=-=-=-= PUZZLES NAVIGATION =-=-=-=-=-=-= */
 .round_info {
-  border: 5px solid;
+  border: var(--border);
+  border-radius: var(--b-radius);
+  box-sizing: border-box;
   color: var(--text);
-  margin: 15px;
-  padding: 5px;
+  background-color: var(--surface0);
+  padding: 5px 5px 15px;
+  width: 95%;
+  max-width: 1200px;
+  margin: 15px auto;
 }
 
 .wsiwo {
-  color: var(--flamingo)
+  color: var(--yellow);
 }
 
 .puzzles_list {
   display: flex;
   flex-wrap: wrap;
   align-items: stretch;
-}
-
-.puzzles_list a {
-  margin: 0.5em;
+  justify-content: center;
+  gap: 10px;
 }
 
 .puzzle_info {
-  border-width: 2px;
-  border-radius: 2px;
+  border: var(--border);
+  border-radius: var(--b-radius);
   border-style: solid;
+  border-color: var(--accent-color, currentColor);
   display: flex;
   flex-direction: column;
   justify-content: center;
   min-height: 100%;
-}
-
-.puzzle_info:hover {
+  padding: 0 0.25em;
   background-color: var(--mantle);
 }
 
+.puzzle_info:hover {
+  background-color: var(--accent-color, currentColor);
+  color: var(--mantle);
+  transition: 0.3s;
+}
+
 .puzzle_name {
-  font-size: 24px;
+  font-size: 22px;
   margin-left: 5px;
   margin-right: 5px;
 }
@@ -157,13 +251,18 @@ fieldset {
 
 .answer_line {
   width: 100%;
-  border-top: 2px solid;
+  border-top: 2px dotted;
   color: inherit;
+  padding: 2px 0;
+  box-sizing: border-box;
+}
+
+.answer {
+  font-style: italic;
 }
 
 .new_puzzle_icon {
   min-height: 100%;
-  flex-grow: 1;
   align-self: center;
 }
 
@@ -173,46 +272,76 @@ fieldset {
   color: var(--text);
 }
 
-/* TODO: prettier link colors maybe? */
-a {
-  text-decoration: none;
-  color: var(--sapphire);
-}
-
-a:hover {
-    color: var(--blue);
-}
-
+/* =-=-=-=-=-=-= PUZZLE STATUSES =-=-=-=-=-=-= */
+/* TODO organize somewhere else */
 .new_puzzle_icon svg:hover {
-  color: var(--surface2);
+  color: var(--surface3);
   cursor: pointer;
+}
+
+.status_NS {
+  --accent-color: var(--sapphire);
+  color: var(--accent-color);
 }
 
 /* locked */
 .status_LO {
-  color: var(--red);
+  --accent-color: var(--red);
+  color: var(--accent-color);
 }
 
 /* stuck */
 .status_ST {
-  color: var(--peach);
+  --accent-color: var(--peach);
+  color: var(--accent-color);
 }
 
 /* in progress */
 .status_IP {
-  color: var(--yellow);
+  --accent-color: var(--yellow);
+  color: var(--accent-color);
 }
 
-/* now extract somehow */
+/* extract */
 .status_EX {
-  color: var(--sky);
+  --accent-color: var(--sky);
+  color: var(--accent-color);
 }
 
 /* solved */
 .status_SL {
-  color: var(--green);
+  --accent-color: var(--green);
+  color: var(--accent-color);
 }
 
+/* =-=-=-=-=-=-= NEW ROUND FORM =-=-=-=-=-=-= */
+.add_new_round {
+  display: flex;
+  flex-direction: row;
+  gap: 0 5px;
+  justify-content: center;
+  padding-top: 15px;
+}
+
+/* =-=-=-=-=-=-= EDIT ROUND MENU =-=-=-=-=-=-= */
+.popup_form {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.popup_form fieldset {
+  background-color: var(--base);
+}
+
+.popup_form legend {
+  -webkit-text-stroke: 5px var(--base);
+  paint-order: stroke fill;
+}
+
+/* todo combine */
 .cancel_button {
   color: var(--red);
   border-color: var(--red);
@@ -237,41 +366,10 @@ a:hover {
   user-select: none;
 }
 
-.popup_form {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.popup_form fieldset {
-  background-color: var(--base);
-}
-
-.popup_form legend {
-  -webkit-text-stroke: 5px var(--base);
-  paint-order: stroke fill;
-}
-
-.nav {
-  font-size: 24px;
-  background-color: var(--mantle);
-  border-bottom: 2px solid var(--text); 
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  padding: 0 8px;
-}
-
-.nav-right {
-  text-align: right;
-  padding-right: 16px
-}
-
+/* =-=-=-=-=-=-= IDK WHAT THIS IS TO BE HONEST =-=-=-=-=-=-= */
 .hunt_info {
   font-size: 40px;
-  border: 2px solid var(--text); 
+  border: 2px solid var(--text);
   border-radius: 8px;
   color: var(--text);
   display: flex;
@@ -289,14 +387,14 @@ a:hover {
   text-align: right;
 }
 
-
+/* =-=-=-=-=-=-= PUZZLE TAB =-=-=-=-=-=-= */
+/* TODO rewrite */
 .puzzle_tab {
   overflow: hidden;
   border: 1px solid var(--text);
   background-color: var(--base);
 }
 
-/* Style the buttons that are used to open the tab content */
 .puzzle_tab button {
   background-color: inherit;
   float: left;
@@ -307,17 +405,14 @@ a:hover {
   transition: 0.3s;
 }
 
-/* Change background color of buttons on hover */
 .puzzle_tab button:hover {
   background-color: var(--mantle);
 }
 
-/* Create an active/current tablink class */
 .puzzle_tab button.active {
   background-color: var(--surface2);
 }
 
-/* Style the tab content */
 .puzzle_tab_content {
   display: none;
   border: 1px solid var(--text);
@@ -325,82 +420,42 @@ a:hover {
   height: 100%;
 }
 
+/* =-=-=-=-=-=-= HOVER TOOLTIP =-=-=-=-=-=-= */
 .tooltip {
   position: relative;
 }
 
 .tooltip .tooltip_text {
-    visibility: hidden;
-    max-width: 33vw; /* Maximum width to avoid being too wide */
-    width: max-content;
-    background-color: var(--crust);
-    color: var(--text);
-    text-align: center;
-    border-radius: 6px;
-    border: 1px solid var(--text);
-    padding: 10px;
-    position: absolute;
-    z-index: 1;
-    bottom: 150%;
-    left: 50%;
-    transform: translateX(-50%);
-    word-wrap: break-word;
-    opacity: 0;
-    transition: opacity 0.1s;
+  visibility: hidden;
+  max-width: 33vw;
+  width: max-content;
+  background-color: var(--text);
+  color: var(--mantle);
+  font-style: italic;
+  border-radius: 6px;
+  padding: 2px 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  word-wrap: break-word;
+  opacity: 0;
+  transition: opacity 0.3s;
 }
 
-.tooltip .tooltip_text::after {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: var(--text) transparent transparent transparent;
-}
-
-.tooltip:hover .tooltip_text {
-    visibility: visible;
-    opacity: 1;
-}
-
-.tooltip {
-  position: relative;
-}
-
-.tooltip .tooltip_text {
-    visibility: hidden;
-    max-width: 33vw; /* Maximum width to avoid being too wide */
-    width: max-content;
-    background-color: var(--crust);
-    color: var(--text);
-    text-align: center;
-    border-radius: 6px;
-    border: 1px solid var(--text);
-    padding: 10px;
-    position: absolute;
-    z-index: 1;
-    bottom: 150%;
-    left: 50%;
-    transform: translateX(-50%);
-    word-wrap: break-word;
-    opacity: 0;
-    transition: opacity 0.1s;
-}
-
-.tooltip .tooltip_text::after {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: var(--text) transparent transparent transparent;
+.tooltip .tooltip_text:after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: var(--text) transparent transparent transparent;
 }
 
 .tooltip:hover .tooltip_text {
-    visibility: visible;
-    opacity: 1;
+  visibility: visible;
+  opacity: 1;
 }
