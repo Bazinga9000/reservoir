@@ -387,39 +387,6 @@ fieldset {
   text-align: right;
 }
 
-/* =-=-=-=-=-=-= PUZZLE TAB =-=-=-=-=-=-= */
-/* TODO rewrite */
-.puzzle_tab {
-  overflow: hidden;
-  border: 1px solid var(--text);
-  background-color: var(--base);
-}
-
-.puzzle_tab button {
-  background-color: inherit;
-  float: left;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  padding: 14px 16px;
-  transition: 0.3s;
-}
-
-.puzzle_tab button:hover {
-  background-color: var(--mantle);
-}
-
-.puzzle_tab button.active {
-  background-color: var(--surface2);
-}
-
-.puzzle_tab_content {
-  display: none;
-  border: 1px solid var(--text);
-  border-top: none;
-  height: 100%;
-}
-
 /* =-=-=-=-=-=-= HOVER TOOLTIP =-=-=-=-=-=-= */
 .tooltip {
   position: relative;
