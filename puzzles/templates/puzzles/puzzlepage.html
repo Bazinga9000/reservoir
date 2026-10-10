@@ -17,7 +17,7 @@
 {% block content %}
 <h1>{% if puzzle.is_meta %}<span class="meta_name"><b>META</b></span>{% endif %}{{ puzzle.name }}</h1>
 <h2>Round{{puzzle.rounds.all.count|pluralize}}: {{ puzzle.rounds.all| join:", "}}</h2>
-<button onclick="showForm('update_puzzle_form')">Update Details</button>
+<button class="update_form" onclick="showForm('update_puzzle_form')">Update Details</button>
 
 <div class="puzzle_tab">
   <button class="puzzle_tab_link" onclick="openTab(event, 'huntpage')">Hunt Page</button>
