@@ -93,7 +93,7 @@ class UpdatePuzzleForm(forms.Form):
 
 
 class UpdateDiscordUserForm(forms.Form):
-    linked_gmail = forms.URLField(label="Google Email", required=False)
+    linked_gmail = forms.EmailField(label="Google Email", required=False)
     chosen_theme = forms.ChoiceField(choices=Theme.choices)
     chat_color = forms.ChoiceField(choices=Color.choices)
 
