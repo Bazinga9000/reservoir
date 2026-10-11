@@ -29,7 +29,7 @@ class DiscordUser(models.Model):
     cached_username = models.CharField(max_length=64)
 
     linked_gmail = models.EmailField(blank=True, max_length=255)
-    chosen_theme = models.CharField(max_length=9, choices=Theme.choices, default=Theme.SEAFOG)
+    chosen_theme = models.CharField(max_length=10, choices=Theme.choices, default=Theme.SEAFOG)
     chat_color = models.CharField(max_length=9, choices=Color.choices, default=Color.BLUE)
 
     def __str__(self):
