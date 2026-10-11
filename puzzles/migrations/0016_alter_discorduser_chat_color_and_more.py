@@ -32,4 +32,5 @@ class Migration(migrations.Migration):
             name='chosen_theme',
             field=models.CharField(choices=THEME_CHOICES, default='seafog', max_length=10),
         ),
+        migrations.RunPython(reset_choices)
     ]
