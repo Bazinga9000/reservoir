@@ -11,6 +11,7 @@ class Theme(models.TextChoices):
     MOCHA = "mocha", "Mocha"
     EVERFOREST = "everforest", "Everforest"
     SEAFOG = "seafog", "Seafog"
+    NEON = "neon", "Neon"
 
 class Color(models.TextChoices):
     ROSEWATER = "rosewater", "Rosewater"
