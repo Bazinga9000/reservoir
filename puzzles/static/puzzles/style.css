@@ -305,7 +305,7 @@ fieldset {
 
 /* extract */
 .status_EX {
-  --accent-color: var(--sky);
+  --accent-color: var(--blue);
   color: var(--accent-color);
 }
 
