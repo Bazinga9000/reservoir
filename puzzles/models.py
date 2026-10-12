@@ -129,7 +129,7 @@ class Round(models.Model):
         if num_metas == 0:
             return 1
         
-        solved_metas = self.puzzle_set.filter(models.Q(is_meta=True) and ~models.Q(status=PuzzleStatus.SOLVED)).count()
+        solved_metas = self.puzzle_set.filter(models.Q(is_meta=True) and models.Q(status=PuzzleStatus.SOLVED)).count()
         unsolved_metas = num_metas - solved_metas
 
         # This round has metas, but all of them are solved, so we lower the round's priority
