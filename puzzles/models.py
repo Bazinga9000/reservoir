@@ -7,23 +7,19 @@ import secrets
 import functools
 
 class Theme(models.TextChoices):
-    LATTE = "latte", "Latte"
-    FRAPPE = "frappe", "Frappé"
-    MACCHIATO = "macchiato", "Macchiato"
+    FLASHBANG = "flashbang", "Flashbang"
     MOCHA = "mocha", "Mocha"
+    EVERFOREST = "everforest", "Everforest"
+    SEAFOG = "seafog", "Seafog"
+    NEON = "neon", "Neon"
 
 class Color(models.TextChoices):
     ROSEWATER = "rosewater", "Rosewater"
-    FLAMINGO = "flamingo", "Flamingo"
-    PINK = "pink", "Pink"
-    MAUVE = "mauve", "Mauve"
     RED = "red", "Red"
-    MAROON = "maroon", "Maroon"
     PEACH = "peach", "Peach"
     YELLOW = "yellow", "Yellow"
     GREEN = "green", "Green"
     TEAL = "teal", "Teal"
-    SKY = "sky", "Sky"
     SAPPHIRE = "sapphire", "Sapphire"
     BLUE = "blue", "Blue"
     LAVENDER = "lavender", "Lavender"
@@ -33,7 +29,7 @@ class DiscordUser(models.Model):
     cached_username = models.CharField(max_length=64)
 
     linked_gmail = models.EmailField(blank=True, max_length=255)
-    chosen_theme = models.CharField(max_length=9, choices=Theme.choices, default=Theme.MOCHA)
+    chosen_theme = models.CharField(max_length=10, choices=Theme.choices, default=Theme.SEAFOG)
     chat_color = models.CharField(max_length=9, choices=Color.choices, default=Color.BLUE)
 
     def __str__(self):
