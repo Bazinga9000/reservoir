@@ -9,7 +9,8 @@ REGISTERED_COMMANDS = [
     HDASCommand(),
     SajakCommand(),
     CalcCommand(),
-    CalcECommand()
+    CalcECommand(),
+    FeedersCommand()
 ]
 
 def fetch_command_of_name(name):
@@ -20,7 +21,7 @@ def fetch_command_of_name(name):
             return c
     return None
 
-# Returns another message to send, or None if none 
+# Returns another message to send, or None if none
 async def parse_command(chat_message):
 
     async def make_message(message):
@@ -37,13 +38,13 @@ async def parse_command(chat_message):
     # All commands start with slash
     if not content.startswith("/"):
         return None
-    
+
     # Remove leading slash
     content = content[1:]
 
     # Split command name from args
     content = content.split(" ")
-    
+
     if len(content) == 0:
         content.append("")
 
@@ -54,7 +55,7 @@ async def parse_command(chat_message):
     if command == "help":
         if args == []:
             return await make_message("\n".join(
-                ["/help: List all commands", "/help <command>: Get help for a specific command."] 
+                ["/help: List all commands", "/help <command>: Get help for a specific command."]
                 + [i.help_with_aliases() for i in REGISTERED_COMMANDS])
             )
         else:
