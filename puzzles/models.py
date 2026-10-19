@@ -92,8 +92,8 @@ class Hunt(models.Model):
     
     def top_prio_puzzles(self):
         puzzle_max = 10
-        puzzles = self.puzzle_set.filter(~models.Q(status__exact=PuzzleStatus.SOLVED)).all()[:puzzle_max]
-        return sorted(puzzles, key=(lambda p: (-p.priority(), p.name)))
+        puzzles = self.puzzle_set.filter(~models.Q(status__exact=PuzzleStatus.SOLVED)).all()
+        return sorted(puzzles, key=(lambda p: (-p.priority(), p.name)))[:puzzle_max]
 
 class HuntMember(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -129,7 +129,7 @@ class Round(models.Model):
         if num_metas == 0:
             return 1
         
-        solved_metas = self.puzzle_set.filter(models.Q(is_meta=True) and models.Q(status=PuzzleStatus.SOLVED)).count()
+        solved_metas = self.puzzle_set.filter(models.Q(is_meta=True) & models.Q(status=PuzzleStatus.SOLVED)).count()
         unsolved_metas = num_metas - solved_metas
 
         # This round has metas, but all of them are solved, so we lower the round's priority
