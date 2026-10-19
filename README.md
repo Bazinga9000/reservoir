@@ -108,7 +108,7 @@ The sqlite database and static files live under `/var/lib/reservoir` (configurab
         {
           services.reservoir = {
             enable = true;
-            port = 8080;
+            port = 8000;
             # see agenix's repo for how to properly configure this
             dotenvFile = config.age.secrets.reservoir-env.path;
             googleOauthCredentials = config.age.secrets.google-oauth.path;

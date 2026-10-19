@@ -13,7 +13,7 @@ from os import getenv
 from urllib.parse import quote
 
 DISCORD_CLIENT_ID = getenv("DISCORD_CLIENT_ID")
-RESERVOIR_HOSTNAME = getenv("RESERVOIR_HOSTNAME")
+RESERVOIR_HOSTNAME = getenv("RESERVOIR_HOSTNAME","localhost:8000")
 DISCORD_REDIRECT_URL = f"http://{RESERVOIR_HOSTNAME}/auth"
 
 from uuid import uuid4
@@ -55,7 +55,7 @@ def user_page(request):
 @login_required()
 def update_discord_user(request):
     du = request.user.discorduser
-    
+
     if request.method == "POST":
         form = UpdateDiscordUserForm(du, request.POST)
         if form.is_valid():
@@ -84,13 +84,13 @@ def puzzlepage(request, puzzle_id):
 @user_can_see_puzzle
 def update(request, puzzle_id):
     puzzle = get_object_or_404(Puzzle, pk=puzzle_id)
-    
+
     if request.method == "POST":
         form = UpdatePuzzleForm(puzzle, request.POST)
         if form.is_valid():
             form.update_puzzle(puzzle)
 
-        # todo: there is definitely a better way to handle answer deletion 
+        # todo: there is definitely a better way to handle answer deletion
         for answer in puzzle.answer_set.all():
             if request.POST.get(f"delete_answer_{answer.id}", False):
                 answer.delete()
@@ -113,13 +113,13 @@ def new_round(request, hunt_id):
 @user_can_see_hunt
 def new_puzzle(request, hunt_id):
     hunt = get_object_or_404(Hunt, pk=hunt_id)
-    
+
     if request.method == "POST":
         form = NewPuzzleForm(hunt, request.POST)
         if form.is_valid():
             puzzle = form.make_puzzle()
             puzzle.save()
-    
+
     return HttpResponseRedirect(reverse("puzzles:bigboard", args=(hunt.id,)))
 
 def landing(request):
