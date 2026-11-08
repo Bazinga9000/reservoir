@@ -128,7 +128,10 @@ function initChat(puzzleId) {
   // UI event handling =====================
 
   chatInput.onkeyup = function (e) {
-    if (e.key === "Enter" && !e.shiftKey) chatSubmit.click();
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      chatSubmit.click();
+    }
   };
 
   chatSubmit.onclick = function (e) {
