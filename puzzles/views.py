@@ -6,9 +6,9 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth import authenticate, logout, login
 
 
-from .models import Hunt, Round, Puzzle, PuzzleStatus, Answer, AuthLink, HuntMember
+from .models import Hunt, Tag, Puzzle, PuzzleStatus, Answer, AuthLink, HuntMember
 from .decorators import user_can_see_hunt, user_can_see_puzzle
-from .forms import NewPuzzleForm, UpdatePuzzleForm, UpdateDiscordUserForm
+from .forms import NewPuzzleForm, UpdatePuzzleForm, UpdateDiscordUserForm, NewTagForm
 from os import getenv
 from urllib.parse import quote
 
@@ -70,7 +70,8 @@ def bigboard(request, hunt_id):
 
     return render(request, "puzzles/bigboard.html", {
         "hunt": hunt,
-        "new_puzzle_form": NewPuzzleForm(hunt)
+        "new_puzzle_form": NewPuzzleForm(hunt),
+        "new_tag_form": NewTagForm(hunt)
     })
 
 @user_can_see_puzzle
@@ -98,15 +99,14 @@ def update(request, puzzle_id):
     return HttpResponseRedirect(reverse("puzzles:puzzlepage", args=(puzzle.id,)))
 
 @user_can_see_hunt
-def new_round(request, hunt_id):
+def new_tag(request, hunt_id):
     hunt = get_object_or_404(Hunt, pk=hunt_id)
 
-    new_round_name = request.POST["new_round"]
-    if new_round_name != "" and len(new_round_name) < 255:
-        rnd = Round()
-        rnd.name = new_round_name
-        rnd.hunt = hunt
-        rnd.save()
+    if request.method == "POST":
+        form = NewTagForm(hunt, request.POST)
+        if form.is_valid():
+            tag = form.create_tag()
+            tag.save()
 
     return HttpResponseRedirect(reverse("puzzles:bigboard", args=(hunt.id,)))
 

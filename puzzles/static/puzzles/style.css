@@ -316,7 +316,7 @@ fieldset {
 }
 
 /* =-=-=-=-=-=-= NEW ROUND FORM =-=-=-=-=-=-= */
-.add_new_round {
+.add_new_tag {
   display: flex;
   flex-direction: row;
   gap: 0 5px;

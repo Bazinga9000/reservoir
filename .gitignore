@@ -26,3 +26,6 @@ data
 
 # Nix
 result
+
+# Backup dev stuff
+*.bak

@@ -1,21 +1,20 @@
 from django import forms
-from .models import PuzzleStatus, Puzzle, Answer, DiscordUser, Theme, Color
-
+from .models import PuzzleStatus, Puzzle, Answer, DiscordUser, Theme, Color, TagKind
 
 class NewPuzzleForm(forms.Form):
     name = forms.CharField(label="Puzzle Name", max_length=255)
     description = forms.CharField(label="Description", max_length=1000, required=False)
-    status = forms.ChoiceField(choices=PuzzleStatus.choices)
-    rounds = forms.MultipleChoiceField(choices=[])
-    url = forms.URLField(label="Puzzle URL", required=False)
     is_meta = forms.BooleanField(label="Meta?", required=False)
+    status = forms.ChoiceField(choices=PuzzleStatus.choices)
+    url = forms.URLField(label="Puzzle URL", required=False)
+    tags = forms.MultipleChoiceField(choices=[])
 
     def __init__(self, hunt, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.hunt = hunt
         
-        self.fields["rounds"] = forms.MultipleChoiceField(choices=[
-            (r.id, r.name) for r in hunt.round_set.all()
+        self.fields["tags"] = forms.MultipleChoiceField(choices=[
+            (r.id, str(r)) for r in hunt.tag_set.all()
         ])
 
     # TODO: this sucks
@@ -29,9 +28,9 @@ class NewPuzzleForm(forms.Form):
         puzzle.description = self.cleaned_data["description"]
         puzzle.regenerate_puzzle_sheet()
         puzzle.save()
-        for hunt_round in self.cleaned_data["rounds"]:
-            print(hunt_round)
-            puzzle.rounds.add(hunt_round)
+        for tag in self.cleaned_data["tags"]:
+            print(tag)
+            puzzle.tags.add(tag)
         puzzle.save()
         return puzzle
 
@@ -40,7 +39,7 @@ class NewPuzzleForm(forms.Form):
 class UpdatePuzzleForm(forms.Form):
     name = forms.CharField(label="Puzzle Name", max_length=255)
     description = forms.CharField(label="Description", max_length=1000, required=False)
-    rounds = forms.MultipleChoiceField(choices=[])
+    tags = forms.MultipleChoiceField(choices=[])
     status = forms.ChoiceField(choices=PuzzleStatus.choices)
     url = forms.URLField(label="Puzzle URL", required=False)
     is_meta = forms.BooleanField(label="Meta?", required=False)
@@ -54,18 +53,17 @@ class UpdatePuzzleForm(forms.Form):
         self.fields["name"].initial = puzzle.name
         self.fields["description"].initial = puzzle.description
 
-        self.fields["rounds"] = forms.MultipleChoiceField(choices=[
-            (r.id, r.name) for r in hunt.round_set.all()
+        self.fields["tags"] = forms.MultipleChoiceField(choices=[
+            (r.id, str(r)) for r in hunt.tag_set.all()
         ])
 
-        self.fields["rounds"].initial = [r.id for r in puzzle.rounds.all()]
+        self.fields["tags"].initial = [r.id for r in puzzle.tags.all()]
 
         self.fields["status"].initial = puzzle.status
         self.fields["url"].initial = puzzle.url
         self.fields["is_meta"].initial = puzzle.is_meta
 
     def update_puzzle(self, puzzle):
-
         old_name = puzzle.name
         puzzle.name = self.cleaned_data["name"]
         if old_name != puzzle.name:
@@ -74,9 +72,9 @@ class UpdatePuzzleForm(forms.Form):
         puzzle.description = self.cleaned_data["description"]
 
 
-        puzzle.rounds.clear()
-        for hunt_round in self.cleaned_data["rounds"]:
-            puzzle.rounds.add(hunt_round)
+        puzzle.tags.clear()
+        for tag in self.cleaned_data["tags"]:
+            puzzle.tags.add(tag)
 
         puzzle.status = self.cleaned_data["status"]
         puzzle.url = self.cleaned_data["url"]
@@ -90,7 +88,20 @@ class UpdatePuzzleForm(forms.Form):
             ans.puzzle = puzzle
             ans.save()
 
+class NewTagForm(forms.Form):
+    kind = forms.ChoiceField(choices=TagKind.choices)
+    name = forms.CharField(label="Tag Name", max_length=255)
 
+    def __init__(self, hunt, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.hunt = hunt
+
+    def create_tag(self):
+        tag = Tag(kind=self.cleaned_data["kind"], 
+                  name=self.cleaned_data["name"], 
+                  hunt=self.hunt)
+        tag.save()
+        return tag
 
 class UpdateDiscordUserForm(forms.Form):
     linked_gmail = forms.EmailField(label="Google Email", required=False)

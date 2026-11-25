@@ -16,7 +16,7 @@
 {% endblock %}
 {% block content %}
 <h1>{% if puzzle.is_meta %}<span class="meta_name"><b>META</b></span>{% endif %}{{ puzzle.name }}</h1>
-<h2>Round{{puzzle.rounds.all.count|pluralize}}: {{ puzzle.rounds.all| join:", "}}</h2>
+<h2>Round{{puzzle.rounds.all.count|pluralize}}: {% for round in puzzle.rounds.all %} {{round.name}}{% if not forloop.last %}, {% endif %}{%endfor%}</h2>
 <button class="update_form" onclick="showForm('update_puzzle_form')">Update Details</button>
 
 <div class="puzzle_tab">

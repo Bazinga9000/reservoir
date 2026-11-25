@@ -8,7 +8,7 @@ urlpatterns = [
     path("hunt/<int:hunt_id>/", views.bigboard, name="bigboard"),
     path("puzzle/<int:puzzle_id>/", views.puzzlepage, name="puzzlepage"),
     path("puzzle/<int:puzzle_id>/update", views.update, name="update"),
-    path("hunt/<int:hunt_id>/new_round", views.new_round, name="new_round"),
+    path("hunt/<int:hunt_id>/new_tag", views.new_tag, name="new_tag"),
     path("hunt/<int:hunt_id>/new_puzzle", views.new_puzzle, name="new_puzzle"),
 
     

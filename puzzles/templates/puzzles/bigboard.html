@@ -30,11 +30,9 @@
 </div>
 </center>
 
-<form class="add_new_round" autocomplete="off" action="{% url 'puzzles:new_round' hunt.id %}" method="post">
-{% csrf_token %}
-<input class="new_round" name="new_round" placeholder="Add New Round" maxlength="255"></input>
-<button type="submit">Add New Round</button>
-</form>
+<div class="add_new_tag">
+<button type="submit" onclick="showForm('new_tag_form')">Add New Tag</button>
+</div>
 
 <div class="round_info wsiwo">
     <center><h2><i>What Should I Work On?</i></h2></center>
@@ -45,14 +43,14 @@
     </div>
 </div>
 
-{% for round in hunt.round_set.all %}
+{% for round_tag in hunt.rounds.all %}
 <div class="round_info">
-    <center><h2>{{ round.name }}</h2></center>
+    <center><h2>{{ round_tag.name }}</h2></center>
     <div class="puzzles_list">
-    {% for puzzle in round.puzzles_ordered %}
+    {% for puzzle in round_tag.puzzles_ordered %}
     {% partial puzzlebox %}
     {% endfor %}
-    <span class="new_puzzle_icon"><a onclick="showForm('new_puzzle_form', '{{ round.id }}')">{% include 'puzzles/icons/plus.svg' %}</a></span>
+    <span class="new_puzzle_icon"><a onclick="showForm('new_puzzle_form', '{{ round_tag.id }}')">{% include 'puzzles/icons/plus.svg' %}</a></span>
     </div>
 </div>
 {% endfor %}
@@ -75,17 +73,29 @@
 </div>
 {% endif %}
 
+<div class="popup_form" id="new_tag_form">
+    <form autocomplete="off" action="{% url 'puzzles:new_tag' hunt.id %}" method="post">
+        {% csrf_token %}
+        <fieldset>
+            <legend><h3>New Tag</h3></legend>
+            {{ new_tag_form }}
+            <button class="cancel_button" onclick="closeForm('new_tag_form')" type="button">Cancel</button>
+            <button class="submit_button" onclick="closeForm('new_tag_form')" type="submit">New Tag</button>
+        </fieldset>
+    </form>
+</div>
+
 <div class="popup_form" id="new_puzzle_form">
-        <form autocomplete="off" action="{% url 'puzzles:new_puzzle' hunt.id %}" method="post">
-            {% csrf_token %}
-            <fieldset>
-                <legend><h3>New Puzzle</h3></legend>
-                {{ new_puzzle_form }}
-                <button class="cancel_button" onclick="closeForm('new_puzzle_form')" type="button">Cancel</button>
-                <button class="submit_button" onclick="closeForm('new_puzzle_form')" type="submit">New Puzzle</button>
-            </fieldset>
-        </form>
-    </div>
+    <form autocomplete="off" action="{% url 'puzzles:new_puzzle' hunt.id %}" method="post">
+        {% csrf_token %}
+        <fieldset>
+            <legend><h3>New Puzzle</h3></legend>
+            {{ new_puzzle_form }}
+            <button class="cancel_button" onclick="closeForm('new_puzzle_form')" type="button">Cancel</button>
+            <button class="submit_button" onclick="closeForm('new_puzzle_form')" type="submit">New Puzzle</button>
+        </fieldset>
+    </form>
+</div>
 
 
 <script>

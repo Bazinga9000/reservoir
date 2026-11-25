@@ -88,7 +88,10 @@ class Hunt(models.Model):
         return self.puzzle_set.filter(status__exact=PuzzleStatus.SOLVED, is_meta__exact=True).count()
 
     def roundless_puzzles(self):
-        return self.puzzle_set.filter(rounds=None).all()
+        return self.puzzle_set.exclude(tags__kind=TagKind.ROUND).all()
+
+    def rounds(self):
+        return self.tag_set.filter(kind=TagKind.ROUND).all()
     
     def top_prio_puzzles(self):
         puzzle_max = 10
@@ -109,54 +112,64 @@ class HuntMember(models.Model):
 class AuthLink(models.Model):
     string = models.CharField(max_length=32, primary_key=True, default=functools.partial(secrets.token_hex, 16))
     hunt = models.ForeignKey(Hunt, on_delete=models.CASCADE)
-    
-class Round(models.Model):
+
+class TagKind(models.TextChoices):
+    ROUND = "RD", "round"
+    META = "MT", "meta-for"
+    FEEDER = "FD", "feeder-for"
+    CONTENT = "CT", "content"
+    PRIORITY = "PT", "priority"
+    OTHER = "OT", "misc"
+
+class Tag(models.Model):
     name = models.CharField(max_length=255)
+    kind = models.CharField(max_length=2, choices=TagKind.choices, default=TagKind.OTHER)
     hunt = models.ForeignKey(Hunt, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.name}"
+        return f"{TagKind(self.kind).label}: {self.name}"
 
     def puzzles_ordered(self):
         # TODO: human sort the name? We might have something weird like shell game with numbered puzzles that goes over 10?
         return self.puzzle_set.order_by("-is_meta", "name").all()
     
-    # An extra multiplier on the puzzles of this round based on its meta structure
-    def priority_multiplier(self):
-        num_metas = self.puzzle_set.filter(is_meta=True).count()
+    ## Deprecating for now. May reactivate later.
+    # # An extra multiplier on the puzzles of this round based on its meta structure
+    # def priority_multiplier(self):
+    #     num_metas = self.puzzle_set.filter(is_meta=True).count()
 
-        # This round has no metas, no adjustment
-        if num_metas == 0:
-            return 1
+    #     # This round has no metas, no adjustment
+    #     if num_metas == 0:
+    #         return 1
         
-        solved_metas = self.puzzle_set.filter(models.Q(is_meta=True) & models.Q(status=PuzzleStatus.SOLVED)).count()
-        unsolved_metas = num_metas - solved_metas
+    #     solved_metas = self.puzzle_set.filter(models.Q(is_meta=True) & models.Q(status=PuzzleStatus.SOLVED)).count()
+    #     unsolved_metas = num_metas - solved_metas
 
-        # This round has metas, but all of them are solved, so we lower the round's priority
-        if unsolved_metas == 0:
-            return 0.25 # Nonzero in case a feeder used elsewhere is prioritized
+    #     # This round has metas, but all of them are solved, so we lower the round's priority
+    #     if unsolved_metas == 0:
+    #         return 0.25 # Nonzero in case a feeder used elsewhere is prioritized
         
-        # This round has exactly one unsolved meta and no other metas. Give it massive priority. 
-        if num_metas == unsolved_metas and num_metas == 1:
-            return 10
+    #     # This round has exactly one unsolved meta and no other metas. Give it massive priority. 
+    #     if num_metas == unsolved_metas and num_metas == 1:
+    #         return 10
         
-        # TODO: if we ever explicitly enable setting puzzles as feeders to metas, account for that
-        num_feeders = self.puzzle_set.filter(is_meta=False).count()
+    #     # TODO: if we ever explicitly enable setting puzzles as feeders to metas, account for that
+    #     num_feeders = self.puzzle_set.filter(is_meta=False).count()
 
-        # This round has only metas. It's probably *extremely* important. Give it brobdingnagian priority.
-        if num_feeders == 0:
-            return 50
+    #     # This round has only metas. It's probably *extremely* important. Give it brobdingnagian priority.
+    #     if num_feeders == 0:
+    #         return 50
 
-        # This round has multiple metas and some non-meta feeders and thus something weird is going on. 
-        # It is not quite as important as a feederless round, but still more important than a 1 meta round
-        # so we give it a merely falstaffian priority 
-        return 25
+    #     # This round has multiple metas and some non-meta feeders and thus something weird is going on. 
+    #     # It is not quite as important as a feederless round, but still more important than a 1 meta round
+    #     # so we give it a merely falstaffian priority 
+    #     return 25
 
 
 class Puzzle(models.Model):
     name = models.CharField(max_length=255)
     hunt = models.ForeignKey(Hunt, on_delete=models.CASCADE)
-    rounds = models.ManyToManyField(Round, through="PuzzleRoundField")
+    tags = models.ManyToManyField(Tag, through="PuzzleTagField")
     url = models.URLField()
     is_meta = models.BooleanField(default=False)
     sheet_id = models.CharField(max_length=255, default="")
@@ -189,8 +202,9 @@ class Puzzle(models.Model):
         
         priority = PuzzleStatus.default_priority(self.status)
 
-        for hunt_round in self.rounds.all():
-            priority *= hunt_round.priority_multiplier()
+        ## Disabling for now since rounds are getting refactored.
+        # for hunt_round in self.rounds.all():
+        #     priority *= hunt_round.priority_multiplier()
 
         # Metas are highly prioritized above and beyond their round multipliers
         if self.is_meta:
@@ -201,20 +215,23 @@ class Puzzle(models.Model):
             priority *= 1.5
 
         return priority
+    
+    def rounds(self):
+        return self.tags.filter(kind=TagKind.ROUND)
 
 
-class PuzzleRoundField(models.Model):
+class PuzzleTagField(models.Model):
     puzzle = models.ForeignKey(Puzzle, on_delete=models.CASCADE)
-    hunt_round = models.ForeignKey(Round, on_delete=models.CASCADE)
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
     
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=["puzzle", "hunt_round"], name="no_duplicate_links"),
+            models.UniqueConstraint(fields=["puzzle", "tag"], name="no_duplicate_links"),
         ]
 
     def clean(self):
-        if self.puzzle.hunt.id != self.hunt_round.hunt.id:
-                raise ValidationError(f"Round {self.hunt_round.name} is not in hunt {self.puzzle.hunt.name}")
+        if self.puzzle.hunt.id != self.tag.hunt.id:
+                raise ValidationError(f"Tag {self.tag.name} is not in hunt {self.puzzle.hunt.name}")
 
 class Answer(models.Model):
     answer_text = models.CharField(max_length=255)
